@@ -17,6 +17,7 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
 
 ## TODO (almost all)
 
+* Migrations
 * REST API
 * Calendar
 * Data monitoring per resource
@@ -27,6 +28,12 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
 * Paginate the Time Inputs
 * Use NelmioApiDocBundle to generate the API doc
 
-## TOFUTURE
+* Add true users management : each user can access to one or many resources (consumers), many groups of resources (team leaders), or to all resources (admins)
 
-* Add users management : each user can access to one or many resources (consumers) , many groups of resources (team leaders), or to all resources (admins)
+## Usage
+
+    git clone git@github.com:mRoca/attentra.git
+    composer install
+    app/console doctrine:database:create
+    app/console doctrine:schema:update --force
+
