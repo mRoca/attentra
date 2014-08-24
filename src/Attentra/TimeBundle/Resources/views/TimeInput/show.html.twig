@@ -1,0 +1,22 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+{% import 'AttentraWebBundle::Twig/tablesorter.macro.html.twig' as tablesorter %}
+
+{% block body -%}
+    <h1>{% trans %}Time input{% endtrans %}</h1>
+
+    <dl class="dl-horizontal">
+        <dt>{% trans %}Date{% endtrans %}</dt>
+        <dd>{{ entity.datetime | date('Y-m-d H:i:s') }}</dd>
+        <dt>{% trans %}Identifier{% endtrans %}</dt>
+        <dd>{{ entity.identifier | default('-') }}</dd>
+        <dt>{% trans %}Type{% endtrans %}</dt>
+        <dd>{{ entity.type | default('-') }}</dd>
+        <dt>{% trans %}Description{% endtrans %}</dt>
+        <dd>{{ entity.description | default('-') | nl2br }}</dd>
+    </dl>
+
+    <div class="clearfix"></div>
+
+    <a href="{{ path('attentra_timeinput_edit', { 'id': entity.id }) }}" class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span> {% trans %}Edit{% endtrans %}</a>
+    <a href="{{ path('attentra_timeinput') }}" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span> {% trans %}Back to the list{% endtrans %}</a>
+{% endblock %}

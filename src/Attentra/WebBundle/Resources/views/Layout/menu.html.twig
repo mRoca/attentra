@@ -1,0 +1,14 @@
+{% import 'AttentraWebBundle::Twig/bootstrap.macro.html.twig' as bootstrap %}
+<ul class="nav navbar-nav">
+    {{ bootstrap.menu_link('attentra_dashboard', 'Home' | trans) }}
+    {{ bootstrap.menu_link('attentra_timeinput', 'Time inputs' | trans) }}
+    {{ bootstrap.menu_link('attentra_resource', 'Resources' | trans) }}
+    {{ bootstrap.menu_link('attentra_resourcegroup', 'Resource groups' | trans) }}
+    {#{% set school = app.request.attributes.get('school') %}#}
+    {#{% if school %}#}
+        {#{{ bootstrap.menu_link('management_grading', 'Gradings', 'ROLE_MANAGEMENT') }}#}
+    {#{% endif %}#}
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    {#{{ bootstrap.menu_link('management_developer', 'Development', 'ROLE_SUPER_ADMIN') }}#}
+</ul>

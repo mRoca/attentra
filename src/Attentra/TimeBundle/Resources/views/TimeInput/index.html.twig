@@ -1,0 +1,53 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+{% import 'AttentraWebBundle::Twig/tablesorter.macro.html.twig' as tablesorter %}
+{% import 'AttentraWebBundle::Twig/bootstrap.macro.html.twig' as bootstrap %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ tablesorter.include_css() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ tablesorter.include_js() }}
+{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}Time inputs{% endtrans %}</h1>
+
+    {% if entities is empty %}
+        {{ tablesorter.no_record('attentra_timeinput_new', 'Add a new input' | trans) }}
+    {% else %}
+        <a class="btn btn-primary pull-right" href="{{ path('attentra_timeinput_new') }}"><span class="glyphicon glyphicon-plus"></span> {% trans %}Add a new input{% endtrans %}</a>
+        <div class="clearfix"></div>
+        <br />
+        <div class="table-responsive">
+            <table class="tablesorter table tablesorter-bootstrap table-bordered">
+                <thead>
+                <tr>
+                    <th>{% trans %}Date{% endtrans %}</th>
+                    <th>{% trans %}Identifier{% endtrans %}</th>
+                    <th>{% trans %}Type{% endtrans %}</th>
+                    <th>{% trans %}Actions{% endtrans %}</th>
+                </tr>
+                </thead>
+                {{ tablesorter.footer(4) }}
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td><a href="{{ path('attentra_timeinput_show', { 'id': entity.id }) }}">{{ entity.datetime | date('Y-m-d H:i:s') }}</a></td>
+                        <td>{{ entity.identifier }}</td>
+                        <td>{{ entity.type }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-default" href="{{ path('attentra_timeinput_show', { 'id': entity.id }) }}" title="{% trans %}Show{% endtrans %}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a class="btn btn-default" href="{{ path('attentra_timeinput_edit', { 'id': entity.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

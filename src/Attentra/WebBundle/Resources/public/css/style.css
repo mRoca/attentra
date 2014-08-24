@@ -1,0 +1,74 @@
+/* ******************** */
+/* Template - Bootstrap */
+/* ******************** */
+
+body { background-color: #e7e7e7; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, serif; }
+
+body > .container, body > .container-fluid { background-color: #fff; box-shadow: 0 4px 6px #999; padding-bottom: 30px; margin-bottom: 20px; position: relative; }
+
+.breadcrumb-container { padding-top: 5px; padding-bottom: 5px; margin-bottom: 20px; border-bottom: 1px solid #017eba; }
+.breadcrumb-container .breadcrumb { background: none; border-radius: 0; font-size: 85%; margin-bottom: 0; padding-left: 0; }
+.breadcrumb-container .breadcrumb a, .navbar-white .navbar-text, .timeline-icon { color: #017eba; }
+
+.navbar { margin-bottom: 0; }
+.navbar.text-center .navbar-icon { margin: 10px 15px; display: inline-block; }
+.navbar.text-center .navbar-icon.navbar-icon-left { position: absolute; left: 20px; }
+.navbar.text-center .navbar-icon.navbar-icon-left.navbar-text-left { left: 130px; font-weight: bold; }
+.navbar .navbar-icon img { max-height: 36px; }
+
+.navbar-white { background-color: #fff; border: none; position: relative; }
+.navbar-white .navbar-text { color: #017eba; padding-right: 10px; }
+.navbar-white .navbar-text.pull-right.position-absolute { top: 0; right: 0; float: none; }
+
+.navbar-blue { border-top: 1px solid #eee; border-bottom: 1px solid #ddd; }
+.navbar-blue .navbar-nav > .active > a, .navbar-blue .navbar-nav > .active > a:hover, .navbar-blue .navbar-nav > .active > a:focus { border-top: 5px solid; padding-top: 10px; }
+
+.container.main-container, .container-fluid.main-container { padding-top: 30px; }
+.container-fluid.container-max { max-width: 90%; margin: auto; }
+
+/* ******************** */
+/* ******* Misc ******* */
+/* ******************** */
+
+body > h1, body > h2 { color: #777; text-shadow: 1px 1px 1px #fff; }
+textarea { resize: vertical; }
+dt, dd { line-height: 2; }
+.dl-horizontal dt { width: 200px; }
+.dl-horizontal dd { margin-left: 220px; }
+.well .dl-horizontal dt { width: 50%; }
+.well .dl-horizontal dd { margin-left: 52%; }
+input[type=file].form-control { height: auto; }
+.form-group input[type="checkbox"] { margin-left: 20px; display: inline !important; width: auto; height: auto; }
+
+.chosen-container-single .chosen-single { background: none; height: 28px; line-height: 26px; }
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] { height: auto !important; }
+.chosen-container { width: 100% !important; }
+
+.tablesorter-bootstrap .tablesorter-filter-row .tablesorter-filter { border: 1px solid #ccc; }
+
+.btn-group-3 { min-width: 120px; }
+
+.table-filters { max-width: 400px; width: 100%; margin-bottom: 20px; float: right; }
+.table-filters .col-md-4 { padding-left: 10px; padding-right: 5px; }
+.table-filters .col-md-4 label { overflow: hidden; white-space: nowrap; display: block; max-width: 100%; }
+
+.well img { max-width: 100%; }
+.dashboard-well { border: 1px solid #dfdfdf; border-radius: 5px; box-shadow: 0 4px 4px #ccc; padding: 15px; display: block; width: 70%; margin: 40px auto; line-height: 30px; }
+
+.datepicker-container > input { display: inline-block; width: 100px; }
+.datepicker-container .time_widget { display: inline-block; }
+.time_widget select, .time_widget input { display: inline-block; width: 90px; }
+.time_widget select ~ select, .time_widget input ~ input { width: 55px; padding: 3px; }
+
+@media (max-width: 991px) {
+    .table-filters { clear: both; float: none; }
+}
+
+@media (max-width: 768px) {
+    .dl-horizontal dt { width: auto !important; }
+    .dl-horizontal dd { margin-left: 0 !important; }
+}
+
+@media print {
+    .btn { display: none !important; }
+}

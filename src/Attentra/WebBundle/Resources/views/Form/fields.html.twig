@@ -1,0 +1,184 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-group {% if errors is not empty %}has-error{% endif %}">
+            {{ form_label(form) }}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+            {% if attr.info is defined %}<p class="help-block">{% autoescape false %}{{ attr.info }}{% endautoescape %}</p>{% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="help-block text-danger">
+                {% for error in errors %}
+                    <p>{{ error.message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not sameas(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label class="control-label {{ label_attr['class']|default('') }}" {% for attrname, attrvalue in label_attr %}{% if(attrname != 'class') %}{{ attrname }}="{{ attrvalue }}"{% endif %}{% endfor %}>
+                {{ label|trans({}, translation_domain) }}
+                {% if required %}
+                    <span class="required-star" title="{% trans %}This field is required{% endtrans %}">*</span>
+                {% endif %}
+            </label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
+
+{% block form_widget_compound %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% if data['panel'] is defined and data['panel'] == null %}
+                {% if form.parent is empty %}
+                    {{ form_errors(form) }}
+                {% endif %}
+                {{ block('form_rows') }}
+                {{ form_rest(form) }}
+            {% else %}
+                <div class="col-md-9 col-md-offset-1">
+                    <div class="panel panel-{{ data['panel'] | default('default') }}">
+                        {% if data['panel-title'] is defined %}
+                            <div class="panel-heading">{{ data['panel-title'] | trans }}</div>
+                        {% elseif label is defined and label != '' %}
+                            <div class="panel-heading"><h2 class="panel-title">{{ label | trans }}</h2></div>
+                        {% endif %}
+                        <div class="panel-body">
+                            {% if form.parent is empty %}
+                                {{ form_errors(form) }}
+                            {% endif %}
+                            {{ block('form_rows') }}
+                        </div>
+
+                        <div class="panel-footer">
+                            {{ form_rest(form) }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock form_widget_compound %}
+
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block widget_attributes %}
+    {% spaceless %}
+        id="{{ id }}" name="{{ full_name }}"
+        class="{{ attr['class']|default('') }} form-control autosize"
+        {%- if read_only %} readonly="readonly"{% endif -%}
+        {%- if disabled %} disabled="disabled"{% endif -%}
+        {%- if required %} required="required"{% endif -%}
+        {%- for attrname, attrvalue in attr -%}
+            {% if attrname != 'class' and attrname != 'info' %}
+                {{- " " -}}
+                {%- if attrname in ['placeholder', 'title'] -%}
+                    {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+                {%- elseif attrvalue is sameas(true) -%}
+                    {{- attrname }}="{{ attrname }}"
+                {%- elseif attrvalue is not sameas(false) -%}
+                    {{- attrname }}="{{ attrvalue }}"
+                {%- endif -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block button_widget %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <button class="btn {{ attr['class']|default('btn-primary') }}" type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+            {% if attr['icon'] is defined %}<span class="glyphicon glyphicon-{{ attr['icon'] }}"></span>{% endif %}
+            {{ label|trans({}, translation_domain) }}
+        </button>
+    {% endspaceless %}
+{% endblock button_widget %}
+
+{% block form_rows %}
+    {% spaceless %}
+        {% for child in form %}
+            {% if child.vars.block_prefixes[0] != 'button' %}
+                {{ form_row(child) }}
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock form_rows %}
+
+{% block form_rest %}
+    {% spaceless %}
+        {% for child in form %}
+            {% if not child.rendered %}
+                {{ form_row(child) }}
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock form_rest %}
+
+{% block button_row %}
+    {% spaceless %}
+        {{ form_widget(form) }}&nbsp;
+    {% endspaceless %}
+{% endblock button_row %}
+
+{% block linkButton_widget %}
+    {% spaceless %}
+        {% if link %}
+            <a class="btn btn-default" href="{{ link }}">{% if icon %}<span class="glyphicon glyphicon-{{ icon }}"></span>{% endif %} {{ label | trans }}</a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block button_attributes %}
+    {% spaceless %}
+        id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif -%}
+        {%- for attrname, attrvalue in attr -%}
+            {% if attrname != 'icon' and attrname != 'class' %}
+                {{- " " -}}
+                {%- if attrname in ['placeholder', 'title'] -%}
+                    {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+                {%- elseif attrvalue is sameas(true) -%}
+                    {{- attrname }}="{{ attrname }}"
+                {%- elseif attrvalue is not sameas(false) -%}
+                    {{- attrname }}="{{ attrvalue }}"
+                {%- endif -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {% endspaceless %}
+{% endblock button_attributes %}
+
+{% block time_widget -%}
+    <div class="time_widget">
+        {% if widget == 'single_text' %}
+            {{- block('form_widget_simple') -}}
+        {% else -%}
+            {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
+            <div {{ block('widget_container_attributes') }}>
+            {% if with_hours is not defined or with_hours %}{{ form_widget(form.hour, vars) }} h {% endif %}{% if with_minutes %}{{ form_widget(form.minute, vars) }} m {% endif %}{% if with_seconds %}{{ form_widget(form.second, vars) }} s {% endif %}
+        </div>
+        {%- endif %}
+    </div>
+{%- endblock time_widget %}

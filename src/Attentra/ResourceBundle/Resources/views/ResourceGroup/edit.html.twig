@@ -1,0 +1,9 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+
+{% block body -%}
+    <h1>{% trans %}Resource group edit{% endtrans %}</h1>
+
+    {{ form(edit_form) }}
+
+    {{ form(delete_form) }}
+{% endblock %}

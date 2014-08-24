@@ -1,0 +1,24 @@
+# IDE
+/.idea
+
+# Symfony2
+/web/bundles/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/config/parameters.yml
+/app/logs/*
+/build/
+/vendor/
+/bin/
+
+# Composer
+/composer.phar
+
+# Temp
+*.php~
+/tmp
+
+# Directories
+!.gitkeep
+!index.html
+!.htaccess

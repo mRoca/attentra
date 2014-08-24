@@ -1,0 +1,10 @@
+{#{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}#}
+{% extends 'AttentraTimeBundle:TimeInput:new.html.twig' %}
+
+{% block body -%}
+    <h1>{% trans %}Time input edit{% endtrans %}</h1>
+
+    {{ form(edit_form) }}
+
+    {{ form(delete_form) }}
+{% endblock %}

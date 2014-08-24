@@ -1,0 +1,5 @@
+
+attentra_dashboard:
+  pattern: /
+  defaults: {_controller: AttentraWebBundle:Dashboard:index}
+

@@ -1,0 +1,9 @@
+
+attentra_web:
+    resource: @AttentraWebBundle/Resources/config/routing.yml
+
+attentra_resource:
+    resource: @AttentraResourceBundle/Resources/config/routing.yml
+
+attentra_time:
+    resource: @AttentraTimeBundle/Resources/config/routing.yml

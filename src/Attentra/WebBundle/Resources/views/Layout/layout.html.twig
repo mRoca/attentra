@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Attentra{% endblock %}</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block stylesheets %}
+        {% stylesheets filter='cssrewrite'
+        'bundles/attentraweb/css/vendor/bootstrap.css'
+        'bundles/attentraweb/css/vendor/jquery-plugins/jquery.chosen.css'
+        'bundles/attentraweb/css/style.css' %}
+        <link rel="stylesheet" type="text/css" media="all" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% javascripts
+        '@AttentraWebBundle/Resources/public/js/vendor/jquery.js'
+        '@AttentraWebBundle/Resources/public/js/vendor/bootstrap.js'
+        '@AttentraWebBundle/Resources/public/js/vendor/jquery.chosen/chosen.jquery.js'
+        '@AttentraWebBundle/Resources/public/js/vendor/jquery.autosize.min.js'
+        '@AttentraWebBundle/Resources/public/js/script.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <!--[if lte IE 9]>
+        {% javascripts
+        '@AttentraWebBundle/Resources/public/js/vendor/html5shiv-printshiv-3.7.1.min.js'
+        '@AttentraWebBundle/Resources/public/js/vendor/respond-1.4.2.min.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <![endif]-->
+    {% endblock %}
+</head>
+<body>
+{% block header %}
+    <header class="navbar navbar-default navbar-static-top navbar-white text-center">
+        <h1 class="navbar-icon">
+            <a href="{{ path('attentra_dashboard') }}">Attentra</a>
+        </h1>
+
+        {#<p class="navbar-text pull-right position-absolute">#}
+            {#{% if is_granted("ROLE_USER") %}#}
+                {#<a href="#" title="{% trans %}My profile{% endtrans %}">{{ app.user.fullname | default('') }} ({{ app.user.username }})</a> /#}
+
+                {#{% if is_granted('ROLE_PREVIOUS_ADMIN') %}#}
+                    {#<a href="{{ path('home', {'_switch_user': '_exit'}) }}">{% trans %}Exit impersonation{% endtrans %}</a> /#}
+                {#{% endif %}#}
+
+                {#<a href="{{ path('fos_user_security_logout') }}">{% trans %}Logout{% endtrans %}</a>#}
+            {#{% else %}#}
+                {#<a href="{{ path('fos_user_security_login') }}">{% trans %}Login{% endtrans %}</a>#}
+            {#{% endif %}#}
+        {#</p>#}
+    </header>
+
+    <header class="navbar navbar-default navbar-static-top navbar-static-and-fixed navbar-blue" role="navigation">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">{% trans %}Toggle navigation{% endtrans %}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <nav class="collapse navbar-collapse" id="navbar-collapse">
+            <div class="container">
+                {% include 'AttentraWebBundle::Layout/menu.html.twig' %}
+            </div>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        {% block body %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+
+<div class="clearfix"></div>
+<div id="layout-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

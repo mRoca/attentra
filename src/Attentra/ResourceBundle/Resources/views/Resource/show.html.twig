@@ -1,0 +1,30 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+{% import 'AttentraWebBundle::Twig/tablesorter.macro.html.twig' as tablesorter %}
+
+{% block body -%}
+    <h1>{% trans %}Resource{% endtrans %}</h1>
+
+    <dl class="dl-horizontal">
+        <dt>{% trans %}Name{% endtrans %}</dt>
+        <dd>{{ entity.name }}</dd>
+        <dt>{% trans %}Identifier{% endtrans %}</dt>
+        <dd>{{ entity.identifier | default('-') }}</dd>
+        <dt>{% trans %}Group{% endtrans %}</dt>
+        <dd>
+            {% if(entity.group) %}
+                <a href="{{ path('attentra_resourcegroup_show', { 'id': entity.group.id }) }}">{{ entity.group }}</a>
+            {% else %} - {% endif %}
+        </dd>
+        <dt>{% trans %}Description{% endtrans %}</dt>
+        <dd>{{ entity.description | default('-') | nl2br }}</dd>
+        {% if entity.deletedAt %}
+            <dt>{% trans %}Deletion date{% endtrans %}</dt>
+            <dd>{{ bootstrap.datetime(entity.deletedAt) }}</dd>
+        {% endif %}
+    </dl>
+
+    <div class="clearfix"></div>
+
+    <a href="{{ path('attentra_resource_edit', { 'id': entity.id }) }}" class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span> {% trans %}Edit{% endtrans %}</a>
+    <a href="{{ path('attentra_resource') }}" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span> {% trans %}Back to the list{% endtrans %}</a>
+{% endblock %}

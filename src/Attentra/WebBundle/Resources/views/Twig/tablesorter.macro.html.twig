@@ -1,0 +1,47 @@
+
+{% macro include_css() %}
+    {% stylesheets 'bundles/attentraweb/css/vendor/jquery-plugins/jquery.tablesorter.bootstrap.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endmacro %}
+
+{% macro include_js() %}
+    {% javascripts
+        'bundles/attentraweb/js/vendor/jquery.tablesorter/jquery.tablesorter.min.js'
+        'bundles/attentraweb/js/vendor/jquery.tablesorter/jquery.tablesorter.widgets.min.js'
+        'bundles/attentraweb/js/vendor/jquery.tablesorter/jquery.tablesorter.pager.min.js'
+        'bundles/attentraweb/js/vendor/jquery.tablesorter/jquery.tablesorter.bootstrap.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endmacro %}
+
+{% macro footer(columns_count) %}
+    <tfoot>
+    <tr>
+        <th colspan="{{ columns_count|default(1) }}" class="pager form-horizontal">
+            <button class="btn btn-default first"><span class="glyphicon glyphicon-step-backward"></span></button>
+            <button class="btn btn-default prev"><span class="glyphicon glyphicon-arrow-left"></span></button>
+            <span class="pagedisplay"></span>
+            <button class="btn btn-default next"><span class="glyphicon glyphicon-arrow-right"></span></button>
+            <button class="btn btn-default last"><span class="glyphicon glyphicon-step-forward"></span></button>
+            <select class="pagesize" title="{% trans %}Select page size{% endtrans %}">
+                <option value="20">20</option>
+                <option selected="selected" value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">2000</option>
+            </select>
+            <select class="pagenum" title="{% trans %}Select page number{% endtrans %}"></select>
+        </th>
+    </tr>
+    </tfoot>
+{% endmacro %}
+
+{% macro no_record(add_link, add_button_label) %}
+    <div class="alert alert-info">
+        <p>{% trans %}No record found{% endtrans %}</p>
+        <br />
+        {% if add_link %}
+            <a class="btn btn-primary" href="{{ path(add_link) }}"><span class="glyphicon glyphicon-plus"></span> {{ add_button_label | default('Add a new item') | trans }}</a>
+        {% endif %}
+    </div>
+{% endmacro %}

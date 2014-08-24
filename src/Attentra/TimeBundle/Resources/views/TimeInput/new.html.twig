@@ -1,0 +1,22 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AttentraWebBundle/Resources/public/js/vendor/jquery.bootstrap.datepicker.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite' 'bundles/attentraweb/css/vendor/jquery-plugins/jquery.bootstrap.datepicker.css' %}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body -%}
+    <h1>{% trans %}Time input creation{% endtrans %}</h1>
+
+    {{ form(form) }}
+
+{% endblock %}

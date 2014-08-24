@@ -1,0 +1,53 @@
+{% macro boolean(value, textTrue, textFalse) %}
+    {% spaceless %}
+        {% if value %}
+            <span class="label label-success">{{ textTrue | default('Yes') | trans }}</span>
+        {% else %}
+            <span class="label label-danger">{{ textFalse | default('No') | trans }}</span>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro menu_link(route, label, groupGranted) %}
+    {% spaceless %}
+        {% if not groupGranted or is_granted(groupGranted) %}
+            <li {% if app.request.attributes.get('_route') == route or app.request.attributes.get('_route')[:route|length+1] == route ~ '_' %}class="active"{% endif %}><a href="{{ path(route) }}">{{ label | trans }}</a></li>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro date(date) %}
+    {% spaceless %}
+        {% if date %}{{ date | date('d/m/Y') }}{% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro datetime(date) %}
+    {% spaceless %}
+        {% if date %}{{ date | date('d/m/Y H:i') }}{% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro gradeFormat(grade) %}
+    {% spaceless %}
+        {{ grade|round(2) }}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro selected(isSelected) %}
+    {% spaceless %}
+        {% if isSelected %}selected="selected"{% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro duration(duration, useShortSyntax) %}
+    {% spaceless %}
+        {% set hours = (duration / 3600) | round(0, 'floor') %}
+        {% set minutes = ((duration % 3600) / 60) | round(0, 'floor') %}
+        {% set secondes = ((duration % 3600) % 60) %}
+
+        {% if(hours) %}{{ hours }} {{ useShortSyntax ? 'h' : ('hour|hours' | transchoice(hours)) }}{% endif %}
+        {% if(minutes) %}{{ minutes }} {{ useShortSyntax ? 'm' : ('minute|minutes' | transchoice(minutes)) }}{% endif %}
+        {% if(secondes) %}{{ secondes }} {{ useShortSyntax ? 's' : ('seconde|secondes' | transchoice(secondes)) }}{% endif %}
+    {% endspaceless %}
+{% endmacro %}
