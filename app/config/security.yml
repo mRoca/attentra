@@ -10,3 +10,24 @@ security:
 
         default:
             anonymous: ~
+
+#        wsse_secured:
+#            pattern:   ^/api/.*
+#            wsse:
+#                lifetime: 300
+#                realm: "Secured with WSSE" #identifies the set of resources to which the authentication information will apply (WWW-Authenticate)
+#                profile: "UsernameToken" #WSSE profile (WWW-Authenticate)
+
+#        main:
+#            pattern:    ^/
+#            provider:   chain_provider
+#            form_login:
+#                csrf_provider: form.csrf_provider
+#                login_path: fos_user_security_login
+#                check_path: fos_user_security_check
+#            anonymous:  true
+#            logout:
+#                path: fos_user_security_logout
+#            remember_me:
+#                key:    %secret%
+#            switch_user: true

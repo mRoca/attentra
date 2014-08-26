@@ -27,6 +27,7 @@ twig:
     form:
         resources:
             - 'AttentraWebBundle:Form:fields.html.twig'
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
     globals:
         locales: ['fr', 'en']
 
@@ -101,9 +102,43 @@ stof_doctrine_extensions:
 
 sensio_framework_extra:
     view:
-        annotations: true
+        annotations: false
 
-
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener:
+        rules:
+            - { path: '^/api/', fallback_format: json }
+            - { path: '^/', priorities: ['*/*'], fallback_format: false, prefer_extension: true }
+    view:
+        #default_engine: php
+        view_response_listener: force
+        force_redirects:
+            html: true
+        formats:
+            jsonp: true
+            json: true
+            xml: true
+            rss: false
+        templating_formats:
+            html: true
+        mime_types:
+            json: ['application/json', 'application/x-json', 'application/vnd.example-com.foo+json']
+            rss: 'application/rss+xml'
+            jpg: 'image/jpeg'
+            png: 'image/png'
+        failed_validation: HTTP_BAD_REQUEST
+        jsonp_handler: ~
+    routing_loader:
+        default_format: json
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Attentra\ApiBundle\Exception\RestException': true
+            'Symfony\Component\Security\Core\Exception\AuthenticationException': true
 
 
 

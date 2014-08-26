@@ -7,3 +7,9 @@ attentra_resource:
 
 attentra_time:
     resource: @AttentraTimeBundle/Resources/config/routing.yml
+
+attentra_api:
+    type: rest
+    resource: @AttentraApiBundle/Resources/config/routing.yml
+    prefix: "/api"
+    options: { i18n: false }

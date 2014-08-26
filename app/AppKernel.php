@@ -21,6 +21,7 @@ class AppKernel extends Kernel
 //            new FOS\UserBundle\FOSUserBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
 
@@ -28,6 +29,7 @@ class AppKernel extends Kernel
             new Attentra\WebBundle\AttentraWebBundle(),
             new Attentra\ResourceBundle\AttentraResourceBundle(),
             new Attentra\TimeBundle\AttentraTimeBundle(),
+            new Attentra\ApiBundle\AttentraApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -41,6 +43,6 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
 }

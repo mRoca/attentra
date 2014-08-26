@@ -14,8 +14,6 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Table(name="resource_groups", indexes={
  *      @ORM\Index(name="name_idx", columns={"name"})
  * })
- *
- * @JMS\ExclusionPolicy("all")
  */
 class ResourceGroup
 {
@@ -24,8 +22,6 @@ class ResourceGroup
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @JMS\Expose
      */
     protected $id;
 
@@ -33,22 +29,19 @@ class ResourceGroup
      * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     *
-     * @JMS\Expose
      */
     protected $name;
 
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @JMS\Expose
      */
     protected $description;
 
     /**
      * @var ArrayCollection|Resource[]
      * @ORM\OneToMany(targetEntity="Resource", mappedBy="group", fetch="EXTRA_LAZY")
+     * @JMS\Exclude
      */
     protected $resources;
 
@@ -77,7 +70,7 @@ class ResourceGroup
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -100,7 +93,7 @@ class ResourceGroup
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -123,7 +116,7 @@ class ResourceGroup
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -156,7 +149,7 @@ class ResourceGroup
     /**
      * Get resources
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getResources()
     {
