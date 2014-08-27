@@ -17,6 +17,7 @@ class ResourceType extends AbstractType
         $builder
             ->add('name')
             ->add('identifier')
+            ->add('group', null, ['required' => false, 'attr' => ['class' => 'chosen']])
             ->add('description');
     }
 

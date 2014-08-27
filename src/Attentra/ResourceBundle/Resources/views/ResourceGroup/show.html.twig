@@ -9,6 +9,12 @@
         <dd>{{ entity.name }}</dd>
         <dt>{% trans %}Description{% endtrans %}</dt>
         <dd>{{ entity.description | default('-') | nl2br }}</dd>
+        <dt>{% trans %}Resources{% endtrans %}</dt>
+        <dd>
+            {% for resource in entity.resources %}
+                <a href="{{ path('attentra_resource_show', { 'id': resource.id }) }}">{{ resource }}</a><br/>
+            {% else %} - {% endfor %}
+        </dd>
     </dl>
 
     <div class="clearfix"></div>
