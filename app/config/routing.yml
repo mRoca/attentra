@@ -13,3 +13,7 @@ attentra_api:
     resource: @AttentraApiBundle/Resources/config/routing.yml
     prefix: "/api"
     options: { i18n: false }
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc

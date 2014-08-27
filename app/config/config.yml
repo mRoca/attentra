@@ -100,38 +100,31 @@ stof_doctrine_extensions:
             softdeleteable: true
             uploadable: true
 
-sensio_framework_extra:
-    view:
-        annotations: false
 
 fos_rest:
-    param_fetcher_listener: true
+    param_fetcher_listener: force
     body_listener: true
+    allowed_methods_listener: true
     format_listener:
         rules:
-            - { path: '^/api/', fallback_format: json }
+            - { path: '^/api/', priorities: [json, xml], fallback_format: json, prefer_extension: true } # Caution : when used from browser without extension, the xml mime type "application/xml" matches and is used
             - { path: '^/', priorities: ['*/*'], fallback_format: false, prefer_extension: true }
     view:
-        #default_engine: php
         view_response_listener: force
         force_redirects:
             html: true
         formats:
-            jsonp: true
             json: true
             xml: true
-            rss: false
         templating_formats:
             html: true
         mime_types:
-            json: ['application/json', 'application/x-json', 'application/vnd.example-com.foo+json']
+            json: ['application/json', 'application/x-json']
             rss: 'application/rss+xml'
             jpg: 'image/jpeg'
             png: 'image/png'
         failed_validation: HTTP_BAD_REQUEST
         jsonp_handler: ~
-    routing_loader:
-        default_format: json
     exception:
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
@@ -139,8 +132,16 @@ fos_rest:
         messages:
             'Attentra\ApiBundle\Exception\RestException': true
             'Symfony\Component\Security\Core\Exception\AuthenticationException': true
+    access_denied_listener:
+        json: true
+    disable_csrf_role: IS_AUTHENTICATED_ANONYMOUSLY
+#    disable_csrf_role: ROLE_API
 
+sensio_framework_extra:
+    view:    { annotations: false }
+    router:  { annotations: true }
 
+nelmio_api_doc: ~
 
 
 

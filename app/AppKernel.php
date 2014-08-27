@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
             new Attentra\CoreBundle\AttentraCoreBundle(),
             new Attentra\WebBundle\AttentraWebBundle(),

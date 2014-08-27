@@ -36,6 +36,6 @@ class ResourceGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'attentra_resourcebundle_resourcegroup';
+        return '';
     }
 }

@@ -4,7 +4,7 @@ namespace Attentra\ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class PublicRestController extends Controller
+class PublicController extends Controller
 {
 
     public function getPingAction()

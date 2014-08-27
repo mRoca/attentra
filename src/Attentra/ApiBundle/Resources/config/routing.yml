@@ -1,11 +1,10 @@
 testwe_api_public :
     type: rest
-    resource: "Attentra\\ApiBundle\\Controller\\PublicRestController"
+    resource: "Attentra\\ApiBundle\\Controller\\PublicController"
     name_prefix:  attentra_api_public_
     prefix: "/public"
 
 testwe_api_user :
     type: rest
-    resource: "Attentra\\ApiBundle\\Controller\\ResourceRestController"
-    name_prefix:  attentra_api_resource_
-#    prefix: "/resource"
+    resource: attentra_api.resource.controller #"Attentra\\ApiBundle\\Controller\\ResourceController"
+    name_prefix:  attentra_api_
