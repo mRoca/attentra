@@ -130,7 +130,6 @@ fos_rest:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
         messages:
-            'Attentra\ApiBundle\Exception\RestException': true
             'Symfony\Component\Security\Core\Exception\AuthenticationException': true
     access_denied_listener:
         json: true

@@ -15,7 +15,7 @@ class TimeInputType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('datetime', 'datetime', ['date_widget' => 'single_text', 'time_widget' => 'single_text', 'date_format' => 'yyyy-MM-dd', 'with_seconds' => true, 'required' => true, 'attr' => ['class' => 'datepicker-container']])
+            ->add('datetime', null, ['widget' => 'single_text']) //One input for API, two for html (calendar + time). Options added in the controller => move that ?
             ->add('identifier')
             ->add('type')
             ->add('description');

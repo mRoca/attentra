@@ -1,8 +1,8 @@
 <?php
 
-namespace Attentra\ApiBundle\Handler;
+namespace Attentra\CoreBundle\Handler;
 
-use Attentra\ApiBundle\Exception\InvalidFormException;
+use Attentra\CoreBundle\Exception\InvalidFormException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -34,8 +34,7 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
     }
 
     /**
-     * @param $id
-     * @return object
+     * {@inheritdoc}
      */
     public function get($id)
     {
@@ -43,9 +42,7 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
     }
 
     /**
-     * @param int $limit
-     * @param int $offset
-     * @return array
+     * {@inheritdoc}
      */
     public function all($limit = 5, $offset = 0)
     {
@@ -53,8 +50,7 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
     }
 
     /**
-     * @param array $parameters
-     * @return object
+     * {@inheritdoc}
      */
     public function post(array $parameters)
     {
@@ -63,9 +59,7 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
     }
 
     /**
-     * @param object $object
-     * @param array $parameters
-     * @return object
+     * {@inheritdoc}
      */
     public function put($object, array $parameters)
     {
@@ -73,13 +67,20 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
     }
 
     /**
-     * @param object $object
-     * @param array $parameters
-     * @return object
+     * {@inheritdoc}
      */
     public function patch($object, array $parameters)
     {
         return $this->processForm($object, $parameters, 'PATCH');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($object)
+    {
+        $this->om->remove($object);
+        $this->om->flush();
     }
 
     /**

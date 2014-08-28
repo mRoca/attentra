@@ -1,22 +1,28 @@
 <?php
 
-namespace Attentra\ApiBundle\Controller;
+namespace Attentra\CoreBundle\Controller;
 
-use Attentra\ApiBundle\Exception\InvalidFormException;
-use Attentra\ApiBundle\Handler\GenericRestHandler;
-use Attentra\ApiBundle\Handler\GenericRestHandlerInterface;
-use FOS\RestBundle\Controller\Annotations\Post;
+use Attentra\CoreBundle\Exception\InvalidFormException;
+use Attentra\CoreBundle\Handler\GenericRestHandler;
+use Attentra\CoreBundle\Handler\GenericRestHandlerInterface;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
+/**
+ * Class GenericRestController
+ *
+ * TODO Add a feature in NelmioApiDocBundle to extend ApiDoc in children classes : atually we can't easily specify dynamics input and output classes.
+ * TODO Idea : add the current class name in parameters passed to filters
+ *
+ */
 abstract class GenericRestController extends FOSRestController
 {
     /** @var GenericRestHandlerInterface | GenericRestHandler */
@@ -83,7 +89,7 @@ abstract class GenericRestController extends FOSRestController
      *   }
      * )
      *
-     * @return FormTypeInterface
+     * @return Form
      */
     public function newAction()
     {
@@ -99,7 +105,6 @@ abstract class GenericRestController extends FOSRestController
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "Attentra\ResourceBundle\Form\ResourceType",
      *   description = "Creates a new entity from the submitted data.",
      *   statusCodes = {
      *     201 = "Returned when the entity is created",
@@ -109,7 +114,7 @@ abstract class GenericRestController extends FOSRestController
      *
      * @param Request $request
      *
-     * @return FormTypeInterface
+     * @return View
      */
     public function postAction(Request $request)
     {
@@ -144,7 +149,7 @@ abstract class GenericRestController extends FOSRestController
      * @param Request $request
      * @param int $id The entity id
      *
-     * @return FormTypeInterface
+     * @return View
      *
      * @throws NotFoundHttpException when page not exist
      */
@@ -187,7 +192,7 @@ abstract class GenericRestController extends FOSRestController
      * @param Request $request
      * @param int $id The entity id
      *
-     * @return FormTypeInterface
+     * @return View
      *
      * @throws NotFoundHttpException when page not exist
      */
@@ -207,6 +212,30 @@ abstract class GenericRestController extends FOSRestController
 
             return $exception->getForm();
         }
+    }
+
+    /**
+     * Delete an existing entity.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     404 = "Returned when the entity is not found"
+     *   }
+     * )
+     *
+     * @param int $id The entity id
+     *
+     * @return View
+     *
+     * @throws NotFoundHttpException when page not exist
+     */
+    public function deleteAction($id)
+    {
+        $this->handler->delete($this->getOr404($id));
+
+        return $this->view(null, Codes::HTTP_NO_CONTENT);
     }
 
 

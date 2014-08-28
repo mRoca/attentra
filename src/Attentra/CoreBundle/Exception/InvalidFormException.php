@@ -1,6 +1,6 @@
 <?php
 
-namespace Attentra\ApiBundle\Exception;
+namespace Attentra\CoreBundle\Exception;
 
 class InvalidFormException extends \RuntimeException
 {

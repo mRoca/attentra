@@ -6,9 +6,9 @@ use Attentra\CoreBundle\Controller\GenericRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 /**
- * @RouteResource("Resource")
+ * @RouteResource("ResourceGroup")
  */
-class ResourceController extends GenericRestController
+class ResourceGroupController extends GenericRestController
 {
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Attentra\ApiBundle\Handler;
+namespace Attentra\CoreBundle\Handler;
 
 interface GenericRestHandlerInterface
 {
@@ -36,4 +36,10 @@ interface GenericRestHandlerInterface
      * @return object
      */
     public function patch($entity, array $parameters);
+
+    /**
+     * @param object $entity
+     * @return object
+     */
+    public function delete($entity);
 }

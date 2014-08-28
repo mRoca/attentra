@@ -197,6 +197,8 @@ class TimeInputController extends Controller
             )
         );
 
+        $form->add('datetime', 'datetime', ['date_widget' => 'single_text', 'time_widget' => 'single_text', 'date_format' => 'yyyy-MM-dd', 'with_seconds' => true, 'required' => true, 'attr' => ['class' => 'datepicker-container']]);
+
         $form->add('submit', 'submit', array('label' => 'Create', 'attr' => ['icon' => 'ok']));
         $form->add('return', new LinkButtonType(), array('link' => $this->generateUrl('attentra_timeinput')));
 

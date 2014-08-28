@@ -3,6 +3,14 @@ parameters:
     attentra_api.resource.handler.class: Attentra\ApiBundle\Handler\ResourceHandler
     attentra_api.resource.form.type.class: Attentra\ResourceBundle\Form\ResourceType
 
+    attentra_api.resourcegroup.class: Attentra\ResourceBundle\Entity\ResourceGroup
+    attentra_api.resourcegroup.handler.class: Attentra\ApiBundle\Handler\ResourceGroupHandler
+    attentra_api.resourcegroup.form.type.class: Attentra\ResourceBundle\Form\ResourceGroupType
+
+    attentra_api.timeinput.class: Attentra\TimeBundle\Entity\TimeInput
+    attentra_api.timeinput.handler.class: Attentra\ApiBundle\Handler\TimeInputHandler
+    attentra_api.timeinput.form.type.class: Attentra\TimeBundle\Form\TimeInputType
+
 services:
     attentra_api.resource.handler:
         class: %attentra_api.resource.handler.class%
@@ -11,3 +19,19 @@ services:
     attentra_api.resource.controller:
         class: Attentra\ApiBundle\Controller\ResourceController
         arguments: [@service_container, @attentra_api.resource.handler]
+
+    attentra_api.resourcegroup.handler:
+        class: %attentra_api.resourcegroup.handler.class%
+        arguments: [@doctrine.orm.entity_manager, %attentra_api.resourcegroup.class%, @form.factory, %attentra_api.resourcegroup.form.type.class%]
+
+    attentra_api.resourcegroup.controller:
+        class: Attentra\ApiBundle\Controller\ResourceGroupController
+        arguments: [@service_container, @attentra_api.resourcegroup.handler]
+
+    attentra_api.timeinput.handler:
+        class: %attentra_api.timeinput.handler.class%
+        arguments: [@doctrine.orm.entity_manager, %attentra_api.timeinput.class%, @form.factory, %attentra_api.timeinput.form.type.class%]
+
+    attentra_api.timeinput.controller:
+        class: Attentra\ApiBundle\Controller\TimeInputController
+        arguments: [@service_container, @attentra_api.timeinput.handler]
