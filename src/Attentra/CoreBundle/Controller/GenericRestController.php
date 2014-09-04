@@ -64,6 +64,9 @@ abstract class GenericRestController extends FOSRestController
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the entity is not found"
+     *   },
+     *   output = {
+     *      "attentra_type" = "entity"
      *   }
      * )
      *
@@ -74,9 +77,7 @@ abstract class GenericRestController extends FOSRestController
      */
     public function getAction($id)
     {
-        $page = $this->getOr404($id);
-
-        return $page;
+        return $this->getOr404($id);
     }
 
     /**
@@ -86,6 +87,9 @@ abstract class GenericRestController extends FOSRestController
      *   resource = true,
      *   statusCodes = {
      *     200 = "Returned when successful"
+     *   },
+     *   input = {
+     *      "attentra_type" = "form_type"
      *   }
      * )
      *
@@ -109,6 +113,9 @@ abstract class GenericRestController extends FOSRestController
      *   statusCodes = {
      *     201 = "Returned when the entity is created",
      *     400 = "Returned when the form has errors"
+     *   },
+     *   input = {
+     *      "attentra_type" = "form_type"
      *   }
      * )
      *
@@ -143,6 +150,9 @@ abstract class GenericRestController extends FOSRestController
      *     201 = "Returned when the entity is created",
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
+     *   },
+     *   input = {
+     *      "attentra_type" = "form_type"
      *   }
      * )
      *
@@ -186,6 +196,9 @@ abstract class GenericRestController extends FOSRestController
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors",
      *     404 = "Returned when the entity is not found"
+     *   },
+     *   input = {
+     *      "attentra_type" = "form_type"
      *   }
      * )
      *
@@ -255,4 +268,13 @@ abstract class GenericRestController extends FOSRestController
 
         return $entity;
     }
+
+    /**
+     * @return \Attentra\CoreBundle\Handler\GenericRestHandler|\Attentra\CoreBundle\Handler\GenericRestHandlerInterface
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
 }

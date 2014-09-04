@@ -23,7 +23,7 @@ class xFillDatabase extends WebTestCase
 
     public function testFilling()
     {
-        $this->assertTrue(count(LoadResourceData::$resources) > 0, 'Database not filling');
+        $this->assertTrue(count(LoadResourceData::$resources) > 0, 'Database empty');
     }
 
-} 
+}

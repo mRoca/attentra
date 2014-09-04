@@ -111,4 +111,21 @@ abstract class GenericRestHandler implements GenericRestHandlerInterface
         throw new InvalidFormException('Invalid submitted data', $form);
     }
 
+    /**
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormTypeClass()
+    {
+        return $this->formTypeClass;
+    }
+
+
 } 

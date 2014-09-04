@@ -142,5 +142,12 @@ sensio_framework_extra:
 
 nelmio_api_doc: ~
 
+parameters:
+  nelmio_api_doc.extractor.api_doc_extractor.class: Attentra\CoreBundle\Extractor\ApiDocExtractor
 
-
+services:
+    attentra_core.api_doc.extractor.generic_rest_parser:
+        class: Attentra\CoreBundle\Parser\GenericRestParser
+        arguments: [@service_container]
+        tags:
+            - { name: nelmio_api_doc.extractor.parser, priority: 1 }
