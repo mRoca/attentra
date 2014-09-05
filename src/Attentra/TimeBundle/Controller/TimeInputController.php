@@ -30,15 +30,11 @@ class TimeInputController extends Controller
      */
     public function indexAction()
     {
+        $identifier = $this->get('request')->query->get('identifier');
+
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
-        $qb = $em->getRepository('AttentraTimeBundle:TimeInput')->createQueryBuilder('t');
-
-        if ($identifier = $this->get('request')->query->get('identifier')) {
-            $qb->where($qb->expr()->eq('t.identifier', ':identifier'));
-            $qb->setParameter('identifier', $identifier);
-        }
+        $qb = $em->getRepository('AttentraTimeBundle:TimeInput')->qbFindByIdentifier($identifier);
 
         //TODO Remember the last pagination
         $paginator  = $this->get('knp_paginator');

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class TimeInput
  *
- * @Entity
+ * @Entity(repositoryClass="Attentra\TimeBundle\Repository\TimeInputRepository")
  *
  * @ORM\Table(name="timeinputs", indexes={
  *      @ORM\Index(name="datetime_idx", columns={"datetime"}),

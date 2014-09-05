@@ -1,0 +1,53 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+{% import 'AttentraWebBundle::Twig/tablesorter.macro.html.twig' as tablesorter %}
+{% import 'AttentraWebBundle::Twig/bootstrap.macro.html.twig' as bootstrap %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite' 'bundles/attentraweb/css/vendor/fullcalendar/fullcalendar.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% stylesheets filter='cssrewrite' 'bundles/attentraweb/css/vendor/fullcalendar/fullcalendar.print.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" media='print'/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/attentraweb/js/vendor/fullcalendar/moment.min.js'
+    'bundles/attentraweb/js/vendor/fullcalendar/fullcalendar.min.js'
+    'bundles/attentraweb/js/vendor/fullcalendar/lang-all.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {% trans %}Time inputs{% endtrans %}
+        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+    </h1>
+
+    <div class="timeinputs-calendar"></div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.timeinputs-calendar').fullCalendar({
+                lang: $('html').attr('lang'),
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: false,
+                eventLimit: true,
+                firstDay: 1,
+                eventSources: [
+                    {
+                        url: '{{ path('attentra_calendar_fullcalendar', { 'identifier':  identifier}) }}'
+                    }
+                ]
+            });
+        });
+    </script>
+{% endblock %}

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -92,6 +93,7 @@ class ResourceController extends Controller
      */
     public function showAction($id)
     {
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AttentraResourceBundle:Resource')->find($id);
@@ -174,6 +176,26 @@ class ResourceController extends Controller
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
+    }
+
+    /**
+     * Find a resource by the identifier key
+     *
+     * @Route("/byidentifier/{identifier}", name="attentra_resource_byidentifier")
+     * @Method("GET")
+     */
+    public function showByIdentifier($identifier)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('AttentraResourceBundle:Resource')->findOneBy(array('identifier' => $identifier));
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find the entity.');
+        }
+
+        return new RedirectResponse($this->generateUrl('attentra_resource_show', array('id' => $entity->getId())));
     }
 
     // ======================================

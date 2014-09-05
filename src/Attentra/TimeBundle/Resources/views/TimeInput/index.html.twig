@@ -13,7 +13,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans %}Time inputs{% endtrans %}{% if identifier %} - {{ identifier }}{% endif%}</h1>
+    <h1>
+        {% trans %}Time inputs{% endtrans %}
+        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+    </h1>
 
     {% if pagination is empty %}
         {{ tablesorter.no_record('attentra_timeinput_new', 'Add a new input' | trans) }}

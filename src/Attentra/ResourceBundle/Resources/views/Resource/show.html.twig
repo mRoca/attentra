@@ -5,6 +5,11 @@
     <h1>{% trans %}Resource{% endtrans %}</h1>
 
     <dl class="dl-horizontal">
+        <dt>&nbsp;</dt>
+        <dd>
+            <a href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" class="btn btn-info"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
+            <a href="{{ path('attentra_calendar', { 'identifier':  entity.identifier}) }}" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> {% trans %}Calendar{% endtrans %}</a>
+        </dd>
         <dt>{% trans %}Name{% endtrans %}</dt>
         <dd>{{ entity.name }}</dd>
         <dt>{% trans %}Identifier{% endtrans %}</dt>
@@ -24,8 +29,6 @@
     </dl>
 
     <div class="clearfix"></div>
-
-    <a href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" class="btn btn-info"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
 
     <a href="{{ path('attentra_resource_edit', { 'id': entity.id }) }}" class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span> {% trans %}Edit{% endtrans %}</a>
     <a href="{{ path('attentra_resource') }}" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span> {% trans %}Back to the list{% endtrans %}</a>
