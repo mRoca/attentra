@@ -5,6 +5,8 @@ namespace Attentra\TimeBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class TimeInputType extends AbstractType
 {
@@ -15,7 +17,14 @@ class TimeInputType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('datetime', null, ['widget' => 'single_text']) //One input for API, two for html (calendar + time). Options added in the controller => move that ?
+            //One input for API, two for html (calendar + time) added in the controller => move in another place ?
+            ->add('datetime', 'datetime', array(
+                'widget'      => 'single_text',
+                'constraints' => array(
+                    new NotBlank(),
+                    new Type('\DateTime'),
+                )
+            ))
             ->add('identifier')
             ->add('type')
             ->add('description');
@@ -38,6 +47,6 @@ class TimeInputType extends AbstractType
      */
     public function getName()
     {
-        return 'attentra_timebundle_timeinput';
+        return '';
     }
 }

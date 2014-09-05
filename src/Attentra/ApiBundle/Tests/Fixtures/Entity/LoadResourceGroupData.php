@@ -2,7 +2,6 @@
 
 namespace Attentra\ApiBundle\Tests\Fixtures\Entity;
 
-use Attentra\ResourceBundle\Entity\Resource;
 use Attentra\ResourceBundle\Entity\ResourceGroup;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

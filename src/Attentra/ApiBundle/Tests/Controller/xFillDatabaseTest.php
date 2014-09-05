@@ -17,6 +17,7 @@ class xFillDatabase extends WebTestCase
         $classes = array(
             'Attentra\ApiBundle\Tests\Fixtures\Entity\LoadResourceGroupData',
             'Attentra\ApiBundle\Tests\Fixtures\Entity\LoadResourceData',
+            'Attentra\ApiBundle\Tests\Fixtures\Entity\LoadTimeInputData',
         );
         $this->loadFixtures($classes);
     }
