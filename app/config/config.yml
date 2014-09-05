@@ -142,6 +142,11 @@ sensio_framework_extra:
 
 nelmio_api_doc: ~
 
+knp_paginator:
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+
+
 parameters:
   nelmio_api_doc.extractor.api_doc_extractor.class: Attentra\CoreBundle\Extractor\ApiDocExtractor
 

@@ -51,3 +51,32 @@
         {% if(secondes) %}{{ secondes }} {{ useShortSyntax ? 's' : ('seconde|secondes' | transchoice(secondes)) }}{% endif %}
     {% endspaceless %}
 {% endmacro %}
+
+{% macro knp_pagination_chevron(pagination, key, label) %}
+    {% spaceless %}
+        {{ knp_pagination_sortable(pagination, label, key) }}
+
+        {% if pagination.isSorted(key) %}
+            {% if pagination.getDirection() == 'asc' %}
+                <i class="glyphicon glyphicon-chevron-up"></i>
+            {% else %}
+                <i class="glyphicon glyphicon-chevron-down"></i>
+            {% endif %}
+        {% else %}
+            <i class="bootstrap-icon-unsorted"></i>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro knp_pagination_footer(pagination, columns_count) %}
+    {% spaceless %}
+        <tfoot>
+        <tr>
+            <th class="text-center" colspan="{{ columns_count }}">
+                {#{{ pagination.getItemNumberPerPage }} / {{ pagination.getTotalItemCount }}#}
+                {{ knp_pagination_render(pagination) }}
+            </th>
+        </tr>
+        </tfoot>
+    {% endspaceless %}
+{% endmacro %}

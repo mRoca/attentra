@@ -33,9 +33,12 @@ class TimeInputController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        return array(
-            'entities' => $em->getRepository('AttentraTimeBundle:TimeInput')->findBy([], ['datetime' => 'desc']),
-        );
+        $qb = $em->getRepository('AttentraTimeBundle:TimeInput')->createQueryBuilder('t');
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($qb, $this->get('request')->query->get('page', 1), 50); //TODO Remember the last pagination
+
+        return array('entities' => $pagination, 'pagination' => $pagination);
     }
 
     /**

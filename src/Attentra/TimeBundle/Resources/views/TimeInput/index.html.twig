@@ -20,18 +20,18 @@
     {% else %}
         <a class="btn btn-primary pull-right" href="{{ path('attentra_timeinput_new') }}"><span class="glyphicon glyphicon-plus"></span> {% trans %}Add a new input{% endtrans %}</a>
         <div class="clearfix"></div>
-        <br />
+        <br/>
         <div class="table-responsive">
-            <table class="tablesorter table tablesorter-bootstrap table-bordered">
+            <table class="table table-bordered tablesorter-bootstrap tablesorter-knppaginator">
                 <thead>
                 <tr>
-                    <th>{% trans %}Date{% endtrans %}</th>
-                    <th>{% trans %}Identifier{% endtrans %}</th>
-                    <th>{% trans %}Type{% endtrans %}</th>
+                    <th>{{ bootstrap.knp_pagination_chevron(pagination, 't.datetime', 'Date' | trans) }}</th>
+                    <th>{{ bootstrap.knp_pagination_chevron(pagination, 't.identifier', 'Identifier' | trans) }}</th>
+                    <th>{{ bootstrap.knp_pagination_chevron(pagination, 't.type', 'Type' | trans) }}</th>
                     <th>{% trans %}Actions{% endtrans %}</th>
                 </tr>
                 </thead>
-                {{ tablesorter.footer(4) }}
+                {{ bootstrap.knp_pagination_footer(pagination, 4) }}
                 <tbody>
                 {% for entity in entities %}
                     <tr>
@@ -50,4 +50,5 @@
             </table>
         </div>
     {% endif %}
+
 {% endblock %}

@@ -46,6 +46,11 @@ input[type=file].form-control { height: auto; }
 
 .tablesorter-bootstrap .tablesorter-filter-row .tablesorter-filter { border: 1px solid #ccc; }
 
+.tablesorter-bootstrap.tablesorter-knppaginator .tablesorter-header { padding: 8px 18px 8px 8px; position: relative; background-clip: padding-box; }
+.tablesorter-bootstrap.tablesorter-knppaginator .tablesorter-header a { color: #333; }
+.tablesorter-bootstrap.tablesorter-knppaginator .tablesorter-header:hover a { text-decoration: underline; }
+.tablesorter-bootstrap.tablesorter-knppaginator .pagination { margin: 5px 0; }
+
 .btn-group-3 { min-width: 120px; }
 
 .table-filters { max-width: 400px; width: 100%; margin-bottom: 20px; float: right; }

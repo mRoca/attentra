@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             new Attentra\CoreBundle\AttentraCoreBundle(),
             new Attentra\WebBundle\AttentraWebBundle(),
