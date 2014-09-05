@@ -25,6 +25,8 @@
 
     <div class="clearfix"></div>
 
+    <a href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" class="btn btn-info"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
+
     <a href="{{ path('attentra_resource_edit', { 'id': entity.id }) }}" class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span> {% trans %}Edit{% endtrans %}</a>
     <a href="{{ path('attentra_resource') }}" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span> {% trans %}Back to the list{% endtrans %}</a>
 {% endblock %}

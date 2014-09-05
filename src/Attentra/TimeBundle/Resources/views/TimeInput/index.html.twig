@@ -13,9 +13,9 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans %}Time inputs{% endtrans %}</h1>
+    <h1>{% trans %}Time inputs{% endtrans %}{% if identifier %} - {{ identifier }}{% endif%}</h1>
 
-    {% if entities is empty %}
+    {% if pagination is empty %}
         {{ tablesorter.no_record('attentra_timeinput_new', 'Add a new input' | trans) }}
     {% else %}
         <a class="btn btn-primary pull-right" href="{{ path('attentra_timeinput_new') }}"><span class="glyphicon glyphicon-plus"></span> {% trans %}Add a new input{% endtrans %}</a>
@@ -33,7 +33,7 @@
                 </thead>
                 {{ bootstrap.knp_pagination_footer(pagination, 4) }}
                 <tbody>
-                {% for entity in entities %}
+                {% for entity in pagination %}
                     <tr>
                         <td><a href="{{ path('attentra_timeinput_show', { 'id': entity.id }) }}">{{ entity.datetime | date('Y-m-d H:i:s') }}</a></td>
                         <td>{{ entity.identifier }}</td>

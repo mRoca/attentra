@@ -20,7 +20,7 @@
     {% else %}
         <a class="btn btn-primary pull-right" href="{{ path('attentra_resource_new') }}"><span class="glyphicon glyphicon-plus"></span> {% trans %}Add a new resource{% endtrans %}</a>
         <div class="clearfix"></div>
-        <br />
+        <br/>
         <div class="table-responsive">
             <table class="tablesorter table tablesorter-bootstrap table-bordered">
                 <thead>
@@ -42,6 +42,7 @@
                             <div class="btn-group">
                                 <a class="btn btn-default" href="{{ path('attentra_resource_show', { 'id': entity.id }) }}" title="{% trans %}Show{% endtrans %}"><span class="glyphicon glyphicon-eye-open"></span></a>
                                 <a class="btn btn-default" href="{{ path('attentra_resource_edit', { 'id': entity.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="btn btn-info" href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" title="{% trans %}Time inputs{% endtrans %}"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
                             </div>
                         </td>
                     </tr>
