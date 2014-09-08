@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  */
-class TimeInput
+class TimeInput implements TimeInputInterface
 {
     /**
      * @var int
@@ -94,7 +94,7 @@ class TimeInput
      * @param \DateTime $datetime
      * @return TimeInput
      */
-    public function setDatetime($datetime)
+    public function setDatetime(\DateTime $datetime)
     {
         $this->datetime = $datetime;
 

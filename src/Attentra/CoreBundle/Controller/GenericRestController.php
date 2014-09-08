@@ -18,10 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 /**
  * Class GenericRestController
- *
- * TODO Add a feature in NelmioApiDocBundle to extend ApiDoc in children classes : atually we can't easily specify dynamics input and output classes.
- * TODO Idea : add the current class name in parameters passed to filters
- *
  */
 abstract class GenericRestController extends FOSRestController
 {

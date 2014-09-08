@@ -1,3 +1,4 @@
 main:
     resource:   "@AttentraTimeBundle/Controller"
     type:       annotation
+
