@@ -76,7 +76,8 @@ class CalendarController extends Controller
 //                'identifier' => $timePeriod->getIdentifier(),
                 'title' => $timePeriod->getIdentifier(),
                 'start' => $timePeriod->getStart()->format('c'),
-                'end'   => $timePeriod->getEnd() ? $timePeriod->getEnd()->format('c') : null,
+                'end'   => $timePeriod->getEnd() ? $timePeriod->getEnd()->format('c') : $timePeriod->getStart()->add(new \DateInterval('PT1H'))->format('c'),
+                'color' => $timePeriod->getHasError() ? 'red' : null
             ];
         }
 
