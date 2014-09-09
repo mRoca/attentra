@@ -37,6 +37,9 @@ abstract class GenericRestController extends FOSRestController
      *   resource = true,
      *   statusCodes = {
      *     200 = "Returned when successful"
+     *   },
+     *   output = {
+     *      "attentra_type" = "entity_collection"
      *   }
      * )
      *
@@ -83,9 +86,6 @@ abstract class GenericRestController extends FOSRestController
      *   resource = true,
      *   statusCodes = {
      *     200 = "Returned when successful"
-     *   },
-     *   input = {
-     *      "attentra_type" = "form_type"
      *   }
      * )
      *

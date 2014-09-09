@@ -47,6 +47,6 @@ class TimeInputType extends AbstractType
      */
     public function getName()
     {
-        return '';
+        return 'attentra_timebundle_timeinput';
     }
 }

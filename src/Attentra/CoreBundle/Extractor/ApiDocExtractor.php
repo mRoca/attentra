@@ -55,7 +55,7 @@ class ApiDocExtractor extends Base
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
             $parameters      = array();
-            $normalizedInput = $this->normalizeClassParameter($input, $route->getDefault('_controller'));
+            $normalizedInput = $this->normalizeClassParameter($input, $route->getDefault('_controller')); //Updated
 
             $supportedParsers = array();
             foreach ($this->getParsers($normalizedInput) as $parser) {
@@ -92,7 +92,7 @@ class ApiDocExtractor extends Base
             $response         = array();
             $supportedParsers = array();
 
-            $normalizedOutput = $this->normalizeClassParameter($output, $route->getDefault('_controller'));
+            $normalizedOutput = $this->normalizeClassParameter($output, $route->getDefault('_controller')); //Updated
 
             foreach ($this->getParsers($normalizedOutput) as $parser) {
                 if ($parser->supports($normalizedOutput)) {
@@ -126,7 +126,7 @@ class ApiDocExtractor extends Base
                     continue;
                 }
 
-                $normalizedModel = $this->normalizeClassParameter($modelName);
+                $normalizedModel = $this->normalizeClassParameter($modelName, $route->getDefault('_controller')); //Updated
 
                 $parameters       = array();
                 $supportedParsers = array();
@@ -156,6 +156,13 @@ class ApiDocExtractor extends Base
         return $annotation;
     }
 
+    /**
+     *  Updated to return the route information
+     *
+     * @param $input
+     * @param string $controllerAndMethod
+     * @return array
+     */
     protected function normalizeClassParameter($input, $controllerAndMethod = '')
     {
         $defaults = array(

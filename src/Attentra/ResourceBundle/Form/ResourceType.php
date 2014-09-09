@@ -38,6 +38,6 @@ class ResourceType extends AbstractType
      */
     public function getName()
     {
-        return '';
+        return 'attentra_resourcebundle_resource';
     }
 }
