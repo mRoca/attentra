@@ -94,14 +94,24 @@ class TimePeriodsParser implements TimePeriodsParserInterface
     {
         /** @var TimePeriodInterface $period */
         $period = new $this->timePeriodClass();
+
         $period->setIdentifier($start->getIdentifier());
         $period->setStart($start->getDatetime());
 
         if ($end instanceof TimeInputInterface) {
             $period->setEnd($end->getDatetime());
             $period->setHasError(false);
+
+            if (method_exists($period, 'setId')) {
+                $period->setId($start->getId() . '-' . $end->getId());
+            }
+
         } else {
             $period->setHasError(true);
+
+            if (method_exists($period, 'setId')) {
+                $period->setId($start->getId());
+            }
         }
 
         return $period;
