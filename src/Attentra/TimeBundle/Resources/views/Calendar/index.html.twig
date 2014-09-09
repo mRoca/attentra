@@ -4,7 +4,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets filter='cssrewrite' 'bundles/attentraweb/css/vendor/fullcalendar/fullcalendar.css' %}
+    {% stylesheets filter='cssrewrite'
+    'bundles/attentraweb/css/vendor/fullcalendar/fullcalendar.css'
+    'bundles/attentraweb/css/vendor/jquery-plugins/jquery.bootstrap.datepicker.css' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
     {% stylesheets filter='cssrewrite' 'bundles/attentraweb/css/vendor/fullcalendar/fullcalendar.print.css' %}
@@ -15,9 +17,10 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-    'bundles/attentraweb/js/vendor/fullcalendar/moment.min.js'
-    'bundles/attentraweb/js/vendor/fullcalendar/fullcalendar.min.js'
-    'bundles/attentraweb/js/vendor/fullcalendar/lang-all.js' %}
+    '@AttentraWebBundle/Resources/public/js/vendor/fullcalendar/moment.min.js'
+    '@AttentraWebBundle/Resources/public/js/vendor/fullcalendar/fullcalendar.min.js'
+    '@AttentraWebBundle/Resources/public/js/vendor/fullcalendar/lang-all.js'
+    '@AttentraWebBundle/Resources/public/js/vendor/jquery.bootstrap.datepicker.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
@@ -28,16 +31,80 @@
         {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
     </h1>
 
-    <div class="timeinputs-calendar"></div>
+    <div id="timeinputs-calendar"></div>
+
+    <div class="modal fade" id="event-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
+                    <h4 class="modal-title">{% trans %}Event{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="event-identifier" class="control-label required">{% trans %}Identifier{% endtrans %} *</label>
+                            <input type="text" maxlength="255" required="required" class="form-control" id="event-identifier">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label required" for="event-start-date">{% trans %}Start{% endtrans %} *</label>
+                            <input type="hidden" id="event-start-id"/>
+
+                            <div class="datepicker-container">
+                                <input type="date" required="required" class="form-control datepicker" id="event-start-date"/>
+
+                                <div class="time_widget">
+                                    <input type="time" step="1" required="required" class="form-control" id="event-start-time">
+                                </div>
+
+                                <a href="#" target="_blank" class="btn btn-info" id="event-start-link" title="{% trans %}Go to time input{% endtrans %}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label required" for="event-end-date">{% trans %}End{% endtrans %} *</label>
+                            <input type="hidden" id="event-end-id"/>
+
+                            <div class="datepicker-container">
+                                <input type="date" required="required" class="form-control datepicker" id="event-end-date"/>
+
+                                <div class="time_widget">
+                                    <input type="time" step="1" required="required" class="form-control" id="event-end-time">
+                                </div>
+
+                                <a href="#" target="_blank" class="btn btn-info" id="event-end-link" title="{% trans %}Go to time input{% endtrans %}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary">{% trans %}Save changes{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style type="text/css">
+        #timeinputs-calendar .fc-day-grid td:hover { cursor: pointer; background: #eee; }
+        #timeinputs-calendar .fc-agendaWeek-view td:hover { cursor: pointer; }
+        #timeinputs-calendar .fc-event:hover { cursor: pointer; box-shadow: 0 0 1px #000; }
+    </style>
 
     <script type="text/javascript">
         $(function () {
-            $('.timeinputs-calendar').fullCalendar({
+            var $calendar = $('#timeinputs-calendar');
+            var $eventModal = $('#event-modal');
+            var timeInputLink = "{{ path('attentra_timeinput_show', {id: 0}) }}";
+            $calendar.fullCalendar({
                 lang: $('html').attr('lang'),
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'month, agendaWeek, agendaDay'
                 },
                 editable: false,
                 eventLimit: true,
@@ -47,7 +114,48 @@
                     {
                         url: '{{ path('attentra_calendar_fullcalendar', { 'identifier':  identifier}) }}'
                     }
-                ]
+                ],
+                dayClick: function (date, jsEvent, view) {
+                    if ( view.name === 'month' ) {
+                        $calendar.fullCalendar('changeView', 'agendaWeek');
+                    } else if ( view.name.toLowerCase().indexOf('week') > -1 ) {
+                        $calendar.fullCalendar('changeView', 'agendaDay');
+                    } else return;
+
+                    $calendar.fullCalendar('gotoDate', date);
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    console.log(calEvent);
+
+                    var id = "" + calEvent.id;
+                    $('#event-identifier').attr('readonly', true).val(calEvent.identifier || calEvent.title);
+
+                    $('#event-start-id').val(id.split('-')[0]);
+                    $('#event-start-date').val(calEvent.start.format('YYYY-MM-DD')).trigger('keyup');
+                    $('#event-start-time').val(calEvent.start.format('HH:mm:ss'));
+
+                    $('#event-end-id').val(calEvent.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
+                    $('#event-end-date').val(calEvent.endIsDefined ? calEvent.end.format('YYYY-MM-DD') : '').trigger('keyup');
+                    $('#event-end-time').val(calEvent.endIsDefined ? calEvent.end.format('HH:mm:ss') : '');
+                    $('#event-end-link').toggle(calEvent.endIsDefined).closest('.form-group').toggleClass('has-error', !calEvent.endIsDefined);
+
+                    $eventModal.modal();
+
+//                    alert('Event: ' + calEvent.title);
+
+                }
+            });
+
+            $('#event-start-link').on('click', function () {
+                var id = $('#event-start-id').val();
+                if ( !id ) return false;
+                $(this).attr('href', timeInputLink.replace('/0', '/' + id));
+            });
+
+            $('#event-end-link').on('click', function () {
+                var id = $('#event-end-id').val();
+                if ( !id ) return false;
+                $(this).attr('href', timeInputLink.replace('/0', '/' + id));
             });
         });
     </script>

@@ -72,12 +72,15 @@ class CalendarController extends Controller
         foreach ($timePeriods as $timePeriod) {
             /** @var TimePeriodInterface $timePeriod */
             $events[] = [
-                'id'    => method_exists($timePeriod, 'getId') ? $timePeriod->getId() : null,
-//                'identifier' => $timePeriod->getIdentifier(),
-                'title' => $timePeriod->getIdentifier(),
-                'start' => $timePeriod->getStart()->format('c'),
-                'end'   => $timePeriod->getEnd() ? $timePeriod->getEnd()->format('c') : $timePeriod->getStart()->add(new \DateInterval('PT1H'))->format('c'),
-                'color' => $timePeriod->getHasError() ? 'red' : null
+                'id'           => method_exists($timePeriod, 'getId') ? $timePeriod->getId() : null,
+                'title'        => $timePeriod->getIdentifier(),
+                'start'        => $timePeriod->getStart()->format('c'),
+                'end'          => $timePeriod->getEnd() ? $timePeriod->getEnd()->format('c') : $timePeriod->getStart()->add(new \DateInterval('PT1H'))->format('c'),
+                'color'        => $timePeriod->getHasError() ? 'red' : null,
+
+                //Not fullcalendar properties
+                'identifier'   => $timePeriod->getIdentifier(),
+                'endIsDefined' => is_object($timePeriod->getEnd())
             ];
         }
 
