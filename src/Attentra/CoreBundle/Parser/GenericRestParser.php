@@ -38,9 +38,12 @@ class GenericRestParser implements ParserInterface, PostParserInterface
      */
     public function parse(array $item)
     {
+        /** @var GenericRestController $controller */
+        $controller = $this->getController($item['controller']);
+
         if ($item['attentra_type'] === 'entity') {
             $params = array(
-                'class'  => $this->getController($item['controller'])->getHandler()->getEntityClass(),
+                'class'  => $controller->getHandler()->getEntityClass(),
                 'groups' => $item['groups']
             );
 
@@ -56,7 +59,7 @@ class GenericRestParser implements ParserInterface, PostParserInterface
         } elseif ($item['attentra_type'] === 'form_type') {
 
             return $this->container->get('nelmio_api_doc.parser.form_type_parser')->parse(array(
-                'class'  => $this->getController($item['controller'])->getHandler()->getFormTypeClass(),
+                'class'  => $controller->getHandler()->getFormTypeClass(),
                 'groups' => $item['groups']
             ));
 

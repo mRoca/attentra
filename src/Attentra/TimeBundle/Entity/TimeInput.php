@@ -94,7 +94,7 @@ class TimeInput implements TimeInputInterface
      * @param \DateTime $datetime
      * @return TimeInput
      */
-    public function setDatetime(\DateTime $datetime)
+    public function setDatetime($datetime)
     {
         $this->datetime = $datetime;
 

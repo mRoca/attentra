@@ -18,7 +18,7 @@ interface TimeInputInterface
      * @param \DateTime $datetime
      * @return TimeInput
      */
-    public function setDatetime(\DateTime $datetime);
+    public function setDatetime($datetime);
 
     /**
      * Get datetime
