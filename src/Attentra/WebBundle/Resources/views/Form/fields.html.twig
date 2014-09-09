@@ -12,9 +12,9 @@
 {% block form_errors %}
     {% spaceless %}
         {% if errors|length > 0 %}
-            <div class="help-block text-danger">
+            <div class="help-block">
                 {% for error in errors %}
-                    <p>{{ error.message }}</p>
+                    <p class="text-danger">{{ error.message }}</p>
                 {% endfor %}
             </div>
         {% endif %}
@@ -34,10 +34,10 @@
                 {% set label = name|humanize %}
             {% endif %}
             <label class="control-label {{ label_attr['class']|default('') }}" {% for attrname, attrvalue in label_attr %}{% if(attrname != 'class') %}{{ attrname }}="{{ attrvalue }}"{% endif %}{% endfor %}>
-                {{ label|trans({}, translation_domain) }}
-                {% if required %}
-                    <span class="required-star" title="{% trans %}This field is required{% endtrans %}">*</span>
-                {% endif %}
+            {{ label|trans({}, translation_domain) }}
+            {% if required %}
+                <span class="required-star" title="{% trans %}This field is required{% endtrans %}">*</span>
+            {% endif %}
             </label>
         {% endif %}
     {% endspaceless %}
@@ -53,7 +53,7 @@
                 {{ block('form_rows') }}
                 {{ form_rest(form) }}
             {% else %}
-                <div class="col-md-9 col-md-offset-1">
+                <div class="col-md-8 col-md-offset-2">
                     <div class="panel panel-{{ data['panel'] | default('default') }}">
                         {% if data['panel-title'] is defined %}
                             <div class="panel-heading">{{ data['panel-title'] | trans }}</div>
@@ -173,10 +173,10 @@
 {% block time_widget -%}
     <div class="time_widget">
         {% if widget == 'single_text' %}
-            {{- block('form_widget_simple') -}}
-        {% else -%}
-            {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
-            <div {{ block('widget_container_attributes') }}>
+        {{- block('form_widget_simple') -}}
+    {% else -%}
+        {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
+        <div {{ block('widget_container_attributes') }}>
             {% if with_hours is not defined or with_hours %}{{ form_widget(form.hour, vars) }} h {% endif %}{% if with_minutes %}{{ form_widget(form.minute, vars) }} m {% endif %}{% if with_seconds %}{{ form_widget(form.second, vars) }} s {% endif %}
         </div>
         {%- endif %}
