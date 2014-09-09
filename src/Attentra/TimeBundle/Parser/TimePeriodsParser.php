@@ -35,6 +35,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public function ajustStartDate(\DateTime $start)
     {
+        $start = clone $start;
         $workDaySep = $this->getWorkDayStartHour(true);
         $start->setTime($workDaySep['hour'], $workDaySep['minute'], $workDaySep['second']);
         return $start;
@@ -46,6 +47,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public function ajustEndDate(\DateTime $end)
     {
+        $end = clone $end;
         $workDaySep = $this->getWorkDayStartHour(true);
         $end->setTime($workDaySep['hour'], $workDaySep['minute'], $workDaySep['second']);
         return $end;
