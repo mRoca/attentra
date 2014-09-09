@@ -32,30 +32,6 @@ $(function () {
         });
     }
 
-    if ( typeof $.fn.redactor !== 'undefined' ) {
-
-        var errorCallback = function (json) {
-            if ( json.error ) {
-                console.error && console.error(json);
-                alert(json.error);
-            }
-        };
-
-        $(".redactor").redactor({
-            lang: lang,
-            buttonSource: false,
-            tabSpaces: 4,
-            minHeight: 200,
-            toolbarFixed: true,
-            toolbarFixedBox: true,
-            toolbarFixedTopOffset: 0,
-            formattingTags: ['p', 'blockquote', 'pre', 'h3', 'h4', 'h5'],
-            buttons: ['html', '|', 'formatting', '|', 'bold', 'italic', 'underline', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', /*'image', 'video', 'file',*/ 'table', 'link', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|', 'horizontalrule'],
-            imageUploadErrorCallback: errorCallback,
-            fileUploadErrorCallback: errorCallback
-        }).after('<p class="text-muted">' + (lang === "fr" ? "Vous pouvez copier/coller des images dans le sujet en utilisant le navigateur Firefox" : "You can copy and paste images with Firefox.") + '</p>');
-    }
-
     if ( typeof $.fn.autosize !== 'undefined' ) {
         $('textarea.autosize').autosize();
     }
