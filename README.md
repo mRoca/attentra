@@ -18,16 +18,9 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
 ## TODO (almost all)
 
 * Migrations
-* REST API
-* Calendar
-* Data monitoring per resource
+* Event update & creation from calendar
 * Data exports
 * Personnal dashboard
-* Exports
-
-* Paginate the Time Inputs
-* Use NelmioApiDocBundle to generate the API doc
-
 * Add true users management : each user can access to one or many resources (consumers), many groups of resources (team leaders), or to all resources (admins)
 
 ## Usage
@@ -36,4 +29,12 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
     composer install
     app/console doctrine:database:create
     app/console doctrine:schema:update --force
+
+## Running tests
+
+    phpunit -c app/
+
+## API Documentation
+
+Go to <projectUrl>/api/doc .
 
