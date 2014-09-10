@@ -15,13 +15,14 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
 * Data exports
 * Personnal dashboard as resource
 
-## TODO (almost all)
+## TODO
 
 * Migrations
 * Event update & creation from calendar
 * Data exports
 * Personnal dashboard
-* Add true users management : each user can access to one or many resources (consumers), many groups of resources (team leaders), or to all resources (admins)
+* Authentication layer
+* Users management : each user can access to one or many resources (consumers), many groups of resources (team leaders), or to all resources (admins)
 
 ## Usage
 
@@ -30,11 +31,31 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
     app/console doctrine:database:create
     app/console doctrine:schema:update --force
 
-## Running tests
+## API Documentation
+
+For the HTML version, with sandbox (NelmioApiDoc) : clone, install the project and go to :
+
+    /api/doc
+
+For the generated markdown version, see
+
+    src/Attentra/ApiBundle/Resources/doc
+
+[Read the documentation](https://github.com/mRoca/attentra/blob/master/src/Attentra/ApiBundle/Resources/doc/index.md)
+
+# Contributing
+
+## Running the Tests
+
+Install the [Composer](http://getcomposer.org/) `dev` dependencies:
+
+    php composer.phar install --dev
+
+Then, run the test suite using
+[PHPUnit](https://github.com/sebastianbergmann/phpunit/):
 
     phpunit -c app/
 
-## API Documentation
+## Generate the API documentation
 
-Go to <projectUrl>/api/doc .
-
+    app/console api:doc:dump --format=markdown > src/Attentra/ApiBundle/Resources/doc/index.md
