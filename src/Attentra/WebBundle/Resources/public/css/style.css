@@ -67,6 +67,8 @@ input[type=file].form-control { height: auto; }
 
 .timeinputs-calendar { margin: 0 auto; margin-top: 30px; max-width: 900px; }
 
+.btn-absolute { position: absolute; right: 20px; }
+
 @media (max-width: 991px) {
     .table-filters { clear: both; float: none; }
 }

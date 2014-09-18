@@ -42,10 +42,17 @@
                 </div>
                 <div class="modal-body">
 
+                    <p class="alert alert-danger" id="event-errors" style="display: none;"></p>
+
                     <fieldset>
                         <div class="form-group">
                             <label for="event-identifier" class="control-label required">{% trans %}Identifier{% endtrans %} *</label>
-                            <input type="text" maxlength="255" required="required" class="form-control" id="event-identifier">
+                            <div class="input-group">
+                                <input type="text" maxlength="255" required="required" class="form-control" id="event-identifier">
+                                <span class="input-group-btn">
+                                    <a href="#" class="btn btn-primary" id="event-identifier-link"><span class="glyphicon glyphicon-calendar"></span> {% trans %}Calendar{% endtrans %}</a>
+                                </span>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -82,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
-                    <button type="button" class="btn btn-primary">{% trans %}Save changes{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="event-submit">{% trans %}Save changes{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -99,6 +106,7 @@
             var $calendar = $('#timeinputs-calendar');
             var $eventModal = $('#event-modal');
             var timeInputLink = "{{ path('attentra_timeinput_show', {id: 0}) }}";
+            var calendarLink = "{{ path('attentra_calendar', {identifier: 0}) }}";
             $calendar.fullCalendar({
                 lang: $('html').attr('lang'),
                 header: {
@@ -125,8 +133,6 @@
                     $calendar.fullCalendar('gotoDate', date);
                 },
                 eventClick: function (calEvent, jsEvent, view) {
-                    console.log(calEvent);
-
                     var id = "" + calEvent.id;
                     $('#event-identifier').attr('readonly', true).val(calEvent.identifier || calEvent.title);
 
@@ -135,14 +141,11 @@
                     $('#event-start-time').val(calEvent.start.format('HH:mm:ss'));
 
                     $('#event-end-id').val(calEvent.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
-                    $('#event-end-date').val(calEvent.endIsDefined ? calEvent.end.format('YYYY-MM-DD') : '').trigger('keyup');
+                    $('#event-end-date').val(calEvent.endIsDefined ? calEvent.end.format('YYYY-MM-DD') : calEvent.start.format('YYYY-MM-DD')).trigger('keyup');
                     $('#event-end-time').val(calEvent.endIsDefined ? calEvent.end.format('HH:mm:ss') : '');
                     $('#event-end-link').toggle(calEvent.endIsDefined).closest('.form-group').toggleClass('has-error', !calEvent.endIsDefined);
 
                     $eventModal.modal();
-
-//                    alert('Event: ' + calEvent.title);
-
                 }
             });
 
@@ -150,12 +153,62 @@
                 var id = $('#event-start-id').val();
                 if ( !id ) return false;
                 $(this).attr('href', timeInputLink.replace('/0', '/' + id));
+                return true;
             });
 
             $('#event-end-link').on('click', function () {
                 var id = $('#event-end-id').val();
                 if ( !id ) return false;
                 $(this).attr('href', timeInputLink.replace('/0', '/' + id));
+                return true;
+            });
+
+            $('#event-identifier-link').on('click', function () {
+                var identifier = $('#event-identifier').val();
+                if ( !identifier ) return false;
+                $(this).attr('href', calendarLink.replace('=0', '=' + identifier));
+                return true;
+            });
+
+            $('.time_widget input').on('dblclick', function () {
+                if ( $(this).val() === "" ) {
+                    var d = new Date();
+                    $(this).val(('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds()).slice(-2));
+                }
+            });
+
+            $('.datepicker-container > input').on('dblclick', function () {
+                if ( $(this).val() === "" ) {
+                    var d = new Date();
+                    $(this).val(d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)).trigger('keyup');
+                }
+            });
+
+            $('#event-submit').on('click', function () {
+                $.ajax({
+                    method: 'post',
+                    url: "{{ path('attentra_calendar_eventupdate') }}",
+                    dataType: 'json',
+                    data: {
+                        identifier: $('#event-identifier').val(),
+                        startId: $('#event-start-id').val(),
+                        startDate: $('#event-start-date').val(),
+                        startTime: $('#event-start-time').val(),
+                        endId: $('#event-end-id').val(),
+                        endDate: $('#event-end-date').val(),
+                        endTime: $('#event-end-time').val()
+                    }
+                }).fail(function (jqXHR) {
+                    //console.log(jqXHR);
+                    var errorText = jqXHR.responseJSON ? jqXHR.responseJSON.message : (jqXHR.error ? jqXHR.error : 'Error during the request.');
+
+                    $('#event-errors').text(errorText).show();
+
+                }).done(function (data) {
+                    $('#event-errors').hide();
+                    $eventModal.modal('hide');
+                    $calendar.fullCalendar('refetchEvents');
+                });
             });
         });
     </script>

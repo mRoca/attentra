@@ -25,4 +25,11 @@ interface TimePeriodsParserInterface
      * @return \DateTime
      */
     public function ajustEndDate(\DateTime $end);
+
+    /**
+     * @param \DateTime $datetime
+     * @param bool $returnString
+     * @return \DateTime|string
+     */
+    public function getDateDay(\DateTime $datetime, $returnString = true);
 }

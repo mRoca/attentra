@@ -8,7 +8,11 @@
         <dt>{% trans %}Date{% endtrans %}</dt>
         <dd>{{ entity.datetime | date('Y-m-d H:i:s') }}</dd>
         <dt>{% trans %}Identifier{% endtrans %}</dt>
-        <dd>{{ entity.identifier | default('-') }}</dd>
+        <dd>
+            {% if(entity.identifier) %}
+                <a href="{{ path('attentra_timeinput', { 'identifier': entity.identifier }) }}">{{ entity.identifier }}</a>
+            {% else %} - {% endif %}
+        </dd>
         <dt>{% trans %}Type{% endtrans %}</dt>
         <dd>{{ entity.type | default('-') }}</dd>
         <dt>{% trans %}Description{% endtrans %}</dt>

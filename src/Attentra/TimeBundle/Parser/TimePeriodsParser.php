@@ -35,7 +35,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public function ajustStartDate(\DateTime $start)
     {
-        $start = clone $start;
+        $start      = clone $start;
         $workDaySep = $this->getWorkDayStartHour(true);
         $start->setTime($workDaySep['hour'], $workDaySep['minute'], $workDaySep['second']);
         return $start;
@@ -47,7 +47,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public function ajustEndDate(\DateTime $end)
     {
-        $end = clone $end;
+        $end        = clone $end;
         $workDaySep = $this->getWorkDayStartHour(true);
         $end->setTime($workDaySep['hour'], $workDaySep['minute'], $workDaySep['second']);
         return $end;
@@ -60,7 +60,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public function timeInputsToEvents(array $timeInputs)
     {
-        $timeInputs = self::groupTimeInputs($timeInputs);
+        $timeInputs = $this->groupTimeInputs($timeInputs);
 
         $periods = array();
 
@@ -129,16 +129,27 @@ class TimePeriodsParser implements TimePeriodsParserInterface
     {
         usort($timeInputs, array(__CLASS__, 'sortTimeInputs'));
 
-        $workDaySep = $this->getWorkDayStartHour(true);
-
         $timeInputsByIdentifier = [];
         foreach ($timeInputs as $timeInput) {
-            $day = $timeInput->getDatetime()->sub(new \DateInterval(sprintf('PT%sH%sM%sS', $workDaySep['hour'], $workDaySep['minute'], $workDaySep['second'])))->format('Y-m-d');
-
-            $timeInputsByIdentifier[$timeInput->getIdentifier()][$day][] = $timeInput;
+            $timeInputsByIdentifier[$timeInput->getIdentifier()][$this->getDateDay($timeInput->getDatetime())][] = $timeInput;
         }
 
         return $timeInputsByIdentifier;
+    }
+
+    /**
+     * @param \DateTime $datetime
+     * @param bool $returnString
+     * @return \DateTime|string
+     */
+    public function getDateDay(\DateTime $datetime, $returnString = true)
+    {
+        $datetime = clone $datetime;
+
+        $workDaySep = $this->getWorkDayStartHour(true);
+        $datetime->sub(new \DateInterval(sprintf('PT%sH%sM%sS', $workDaySep['hour'], $workDaySep['minute'], $workDaySep['second'])));
+
+        return $returnString ? $datetime->format('Y-m-d') : $datetime;
     }
 
     /**
