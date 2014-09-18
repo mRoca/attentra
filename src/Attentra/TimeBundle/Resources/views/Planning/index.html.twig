@@ -1,0 +1,110 @@
+{% extends 'AttentraWebBundle:Layout:layout.html.twig' %}
+{% import 'AttentraWebBundle::Twig/tablesorter.macro.html.twig' as tablesorter %}
+{% import 'AttentraWebBundle::Twig/bootstrap.macro.html.twig' as bootstrap %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter='cssrewrite'
+    'bundles/attentraweb/css/vendor/jquery-plugins/jquery.bootstrap.datepicker.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@AttentraWebBundle/Resources/public/js/vendor/jquery.bootstrap.datepicker.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {% trans %}Planning{% endtrans %}
+        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+    </h1>
+
+    {% if timeSpentManager.hasFullPeriod('year') %}
+        <h2>{% trans %}By year{% endtrans %}</h2>
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('year') %}
+                {% if timeSpentManager.isPeriodFull('year', day) %}
+                    <tr>
+                        <td>{{ day | date('Y') }}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if timeSpentManager.hasFullPeriod('month') %}
+        <h2>{% trans %}By month{% endtrans %}</h2>
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('month') %}
+                {% if timeSpentManager.isPeriodFull('month', day) %}
+                    <tr>
+                        <td>{{ day | date('F Y') }}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if timeSpentManager.hasFullPeriod('week') %}
+        <h2>{% trans %}By week{% endtrans %}</h2>
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('week') %}
+                {% if timeSpentManager.isPeriodFull('week', day) %}
+                    <tr>
+                        <td>{{ day | date('W (o)') }}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if timeSpentManager.hasFullPeriod('day') %}
+        <h2>{% trans %}By day{% endtrans %}</h2>
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('day') %}
+                {% if timeSpentManager.isPeriodFull('day', day) %}
+                    <tr>
+                        <td>{{ day | date('Y-m-d') }}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {#<div class="panel-group" id="planning-accordion">#}
+    {#<div class="panel panel-default">#}
+    {#<div class="panel-heading">#}
+    {#<h4 class="panel-title">#}
+    {#<a data-toggle="collapse" data-parent="#planning-accordion" href="#collapseOne">#}
+    {#Collapsible Group Item #1#}
+    {#</a>#}
+    {#</h4>#}
+    {#</div>#}
+    {#<div id="collapseOne" class="panel-collapse collapse in">#}
+    {#<div class="panel-body">#}
+    {#<table class="table table-striped table-condensed">#}
+    {#</table>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+
+    <style type="text/css">
+
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+        });
+    </script>
+{% endblock %}

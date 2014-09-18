@@ -129,7 +129,7 @@ class CalendarController extends Controller
                         throw new BadRequestHttpException("Dates must concern the same day.");
                     }
 
-                    if ($newDate->getTimestamp() <= $previousDate->getTimestamp()) {
+                    if ($newDate <= $previousDate) {
                         throw new BadRequestHttpException("The $cur date must be greather than previous date.");
                     }
                 }

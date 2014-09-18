@@ -3,6 +3,7 @@
 namespace Attentra\TimeBundle\Parser;
 
 use Attentra\TimeBundle\Entity\TimeInputInterface;
+use Attentra\TimeBundle\Entity\TimeInterval;
 use Attentra\TimeBundle\Entity\TimePeriodInterface;
 
 class TimePeriodsParser implements TimePeriodsParserInterface
@@ -14,26 +15,43 @@ class TimePeriodsParser implements TimePeriodsParserInterface
     protected $workDayStartHour = '00:00:00';
 
     /**
+     * Permit to group times inputs by weeks. Numeric representation of the day of the week, 0 (for Sunday) through 6 (for Saturday)
+     * @var string
+     */
+    protected $workWeekStartDay = '1';
+
+    /**
      * @var string
      */
     protected $timePeriodClass;
 
-    public function __construct($timePeriodClass, $workDayStartHour)
+    public function __construct($timePeriodClass, $workDayStartHour = null, $workWeekStartDay = null)
     {
         //Time format validation
-        if (!is_object(\DateTime::createFromFormat('h:i:s', $workDayStartHour))) {
-            throw new \ErrorException('The hour format is invalid');
+        if ($workDayStartHour !== null) {
+            if (!is_object(\DateTime::createFromFormat('h:i:s', $workDayStartHour))) {
+                throw new \ErrorException('The hour format is invalid');
+            }
+            $this->workDayStartHour = $workDayStartHour;
         }
 
-        $this->timePeriodClass  = $timePeriodClass;
-        $this->workDayStartHour = $workDayStartHour;
+        //Day format validation
+        if ($workWeekStartDay !== null) {
+            if (!($workWeekStartDay >= 0 && $workWeekStartDay <= 6)) {
+                throw new \ErrorException('The day format is invalid');
+            }
+            $this->workWeekStartDay = $workWeekStartDay;
+        }
+
+        $this->timePeriodClass = $timePeriodClass;
     }
 
     /**
      * @param \DateTime $start
+     * @param string $adjustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustStartDate(\DateTime $start)
+    public function ajustStartDate(\DateTime $start, $adjustPeriod = 'day')
     {
         $start      = clone $start;
         $workDaySep = $this->getWorkDayStartHour(true);
@@ -43,9 +61,10 @@ class TimePeriodsParser implements TimePeriodsParserInterface
 
     /**
      * @param \DateTime $end
+     * @param string $ajustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustEndDate(\DateTime $end)
+    public function ajustEndDate(\DateTime $end, $ajustPeriod = 'day')
     {
         $end        = clone $end;
         $workDaySep = $this->getWorkDayStartHour(true);
@@ -86,6 +105,34 @@ class TimePeriodsParser implements TimePeriodsParserInterface
 
         return $periods;
     }
+
+    /**
+     * @param TimeInputInterface[] $timeInputs
+     * @return TimeInterval[]
+     */
+    public function timeInputsToSpentTimeByDay(array $timeInputs)
+    {
+        $timePeriods = $this->timeInputsToEvents($timeInputs);
+
+        /** @var TimeInterval[] $spentTime */
+        $spentTime = array();
+
+        foreach ($timePeriods as $timePeriod) {
+            if (!$timePeriod->getHasError()) {
+                $day      = $this->getDateDay($timePeriod->getStart());
+                $interval = TimeInterval::fromDateInterval($timePeriod->getStart()->diff($timePeriod->getEnd()));
+
+                if (!isset($spentTime[$day])) {
+                    $spentTime[$day] = $interval;
+                } else {
+                    $spentTime[$day]->add($interval);
+                }
+            }
+        }
+
+        return $spentTime;
+    }
+
 
     /**
      * @param TimeInputInterface $start
@@ -159,10 +206,10 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      */
     public static function sortTimeInputs(TimeInputInterface $a, TimeInputInterface $b)
     {
-        if ($a->getDatetime()->getTimestamp() == $b->getDatetime()->getTimestamp()) {
+        if ($a->getDatetime() == $b->getDatetime()) {
             return 0;
         }
-        return ($a->getDatetime()->getTimestamp() < $b->getDatetime()->getTimestamp()) ? -1 : 1;
+        return ($a->getDatetime() < $b->getDatetime()) ? -1 : 1;
     }
 
     /**

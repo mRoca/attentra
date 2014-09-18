@@ -10,21 +10,29 @@ interface TimePeriodsParserInterface
 
     /**
      * @param TimeInputInterface[] $timeInputs
-     * @return TimePeriodInterface
+     * @return TimePeriodInterface[]
      */
     public function timeInputsToEvents(array $timeInputs);
 
     /**
+     * @param TimeInputInterface[] $timeInputs
+     * @return \DateInterval[]
+     */
+    public function timeInputsToSpentTimeByDay(array $timeInputs);
+
+    /**
      * @param \DateTime $start
+     * @param string $adjustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustStartDate(\DateTime $start);
+    public function ajustStartDate(\DateTime $start, $adjustPeriod = 'day');
 
     /**
      * @param \DateTime $end
+     * @param string $ajustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustEndDate(\DateTime $end);
+    public function ajustEndDate(\DateTime $end, $ajustPeriod = 'day');
 
     /**
      * @param \DateTime $datetime

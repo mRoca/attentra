@@ -3,12 +3,17 @@ parameters:
     attentra_time.timeperiod.class: Attentra\TimeBundle\Entity\TimePeriod
     attentra_time.timeperiod.parser.class: Attentra\TimeBundle\Parser\TimePeriodsParser
     attentra_time.timeperiod.parser.separator_hour: '03:00:00'
+    attentra_time.timeperiod.parser.separator_day: '1'
 
 services:
     attentra_time.timeperiod.parser:
         class: %attentra_time.timeperiod.parser.class%
-        arguments: [%attentra_time.timeperiod.class%, %attentra_time.timeperiod.parser.separator_hour%]
+        arguments: [%attentra_time.timeperiod.class%, %attentra_time.timeperiod.parser.separator_hour%, %attentra_time.timeperiod.parser.separator_day%]
 
     attentra_time.calendar.controller:
         class: Attentra\TimeBundle\Controller\CalendarController
+        arguments: [@service_container, @attentra_time.timeperiod.parser]
+
+    attentra_time.planning.controller:
+        class: Attentra\TimeBundle\Controller\PlanningController
         arguments: [@service_container, @attentra_time.timeperiod.parser]

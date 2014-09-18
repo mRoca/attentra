@@ -5,8 +5,7 @@ namespace Attentra\TimeBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints;
 
 class TimeInputType extends AbstractType
 {
@@ -21,8 +20,8 @@ class TimeInputType extends AbstractType
             ->add('datetime', 'datetime', array(
                 'widget'      => 'single_text',
                 'constraints' => array(
-                    new NotBlank(),
-                    new Type('\DateTime'),
+                    new Constraints\NotBlank(),
+                    new Constraints\DateTime(),
                 )
             ))
             ->add('identifier')
