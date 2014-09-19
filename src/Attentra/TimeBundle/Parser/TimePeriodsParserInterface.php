@@ -22,17 +22,15 @@ interface TimePeriodsParserInterface
 
     /**
      * @param \DateTime $start
-     * @param string $adjustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustStartDate(\DateTime $start, $adjustPeriod = 'day');
+    public function ajustStartDate(\DateTime $start);
 
     /**
      * @param \DateTime $end
-     * @param string $ajustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustEndDate(\DateTime $end, $ajustPeriod = 'day');
+    public function ajustEndDate(\DateTime $end);
 
     /**
      * @param \DateTime $datetime

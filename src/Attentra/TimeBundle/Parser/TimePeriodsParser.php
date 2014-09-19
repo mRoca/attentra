@@ -51,7 +51,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      * @param string $adjustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustStartDate(\DateTime $start, $adjustPeriod = 'day')
+    public function ajustStartDate(\DateTime $start)
     {
         $start      = clone $start;
         $workDaySep = $this->getWorkDayStartHour(true);
@@ -64,7 +64,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
      * @param string $ajustPeriod day|week|month|year
      * @return \DateTime
      */
-    public function ajustEndDate(\DateTime $end, $ajustPeriod = 'day')
+    public function ajustEndDate(\DateTime $end)
     {
         $end        = clone $end;
         $workDaySep = $this->getWorkDayStartHour(true);
@@ -146,6 +146,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
 
         $period->setIdentifier($start->getIdentifier());
         $period->setStart($start->getDatetime());
+        $period->setConcernedDay(new \DateTime($this->getDateDay($start->getDatetime())));
 
         if ($end instanceof TimeInputInterface) {
             $period->setEnd($end->getDatetime());

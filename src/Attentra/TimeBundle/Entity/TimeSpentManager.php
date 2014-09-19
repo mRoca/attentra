@@ -4,6 +4,7 @@ namespace Attentra\TimeBundle\Entity;
 
 use Attentra\CoreBundle\Collections\ArrayCollection;
 
+//TODO Manage less than days
 class TimeSpentManager
 {
 
@@ -13,7 +14,7 @@ class TimeSpentManager
     /** @var \DateTime */
     protected $end;
 
-    /** @var ArrayCollection|TimePeriod[] */
+    /** @var ArrayCollection|TimePeriodInterface[] */
     protected $timePeriods;
 
     /**
@@ -44,6 +45,10 @@ class TimeSpentManager
         return new \DatePeriod($this->start, new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $this->end);
     }
 
+    /**
+     * @param $ajustPeriod
+     * @return bool
+     */
     public function hasFullPeriod($ajustPeriod)
     {
         $period = $this->getDatePeriod();
@@ -64,35 +69,106 @@ class TimeSpentManager
      */
     public function isPeriodFull($ajustPeriod, \DateTime $concernedDate)
     {
-        //TODO Manage less than days
-        if ($ajustPeriod === 'year') {
-            return $this->start <= new \DateTime('first day of ' . $concernedDate->format('Y')) && $this->end >= new \DateTime('last day of ' . $concernedDate->format('Y'));
-        } else if ($ajustPeriod === 'month') {
-            return $this->start <= new \DateTime('first day of ' . $concernedDate->format('F Y')) && $this->end >= new \DateTime('last day of ' . $concernedDate->format('F Y'));
-        } else if ($ajustPeriod === 'week') {
-            $firstDay = clone $concernedDate;
-            $firstDay->modify('first day of this week');
-            $lastDay = clone $concernedDate;
-            $lastDay->modify('last day of this week');
-            return $this->start <= $firstDay && $this->end >= $lastDay;
-        } else if ($ajustPeriod === 'day') {
-            return $this->start <= new \DateTime($concernedDate->format('Y-m-d')) && $this->end >= new \DateTime($concernedDate->format('Y-m-d'));
+        return $this->start <= $this->getPeriodStartDate($ajustPeriod, $concernedDate) && $this->end >= $this->getPeriodEndDate($ajustPeriod, $concernedDate);
+    }
+
+    /**
+     * @param string $ajustPeriod
+     * @param \DateTime $concernedDate
+     * @return bool
+     */
+    public function isLastPeriod($ajustPeriod, \DateTime $concernedDate)
+    {
+        return $concernedDate >= $this->getPeriodStartDate($ajustPeriod, $this->end) && $concernedDate <= $this->getPeriodEndDate($ajustPeriod, $this->end);
+    }
+
+    /**
+     * @param string $ajustPeriod
+     * @param \DateTime $concernedDate
+     * @return TimeInterval
+     */
+    public function getSpentTimeIntervalByPeriod($ajustPeriod, \DateTime $concernedDate)
+    {
+        $spentTime = new TimeInterval('PT0S');
+
+        $timePeriods = $this->getTimePeriodsByPeriod($ajustPeriod, $concernedDate);
+        foreach ($timePeriods as $timePeriod) {
+            if ($timePeriod->getEnd()) {
+                $spentTime->add($timePeriod->getStart()->diff($timePeriod->getEnd()));
+            }
         }
 
-        return false;
+        return $spentTime;
     }
 
     /**
+     * @param string $ajustPeriod
+     * @param \DateTime $concernedDate
      * @return ArrayCollection|TimePeriod[]
      */
-    public function getTimePeriods()
+    public function getTimePeriodsByPeriod($ajustPeriod, \DateTime $concernedDate)
     {
-        return $this->timePeriods;
+        $start = $this->getPeriodStartDate($ajustPeriod, $concernedDate);
+        $end   = $this->getPeriodEndDate($ajustPeriod, $concernedDate);
+
+        $timePeriods = new ArrayCollection();
+        foreach ($this->timePeriods as $timePeriod) {
+            if ($timePeriod->getConcernedDay() >= $start && $timePeriod->getConcernedDay() <= $end) {
+                $timePeriods->add($timePeriod);
+            }
+        }
+
+        return $timePeriods;
     }
 
+    /**
+     * @param $ajustPeriod
+     * @param \DateTime $concernedDate
+     * @return \DateTime|null
+     */
+    public function getPeriodStartDate($ajustPeriod, \DateTime $concernedDate)
+    {
+        $date = clone $concernedDate;
+        $date->setTime(0, 0, 0);
+
+        if ($ajustPeriod === 'year') {
+            return $date->modify('first day of January' . $date->format('Y'));
+        } else if ($ajustPeriod === 'month') {
+            return $date->modify('first day of this month');
+        } else if ($ajustPeriod === 'week') {
+            return $date->modify(($date->format('w') === '0') ? 'monday last week' : 'monday this week');
+        } else if ($ajustPeriod === 'day') {
+            return $date;//->setTime(0, 0, 0);
+        }
+
+        return null;
+    }
 
     /**
-     * @param TimePeriod[]|ArrayCollection $timePeriods
+     * @param $ajustPeriod
+     * @param \DateTime $concernedDate
+     * @return \DateTime|null
+     */
+    public function getPeriodEndDate($ajustPeriod, \DateTime $concernedDate)
+    {
+        $date = clone $concernedDate;
+        $date->setTime(0, 0, 0);
+
+        if ($ajustPeriod === 'year') {
+            return $date->modify('last day of December ' . $date->format('Y'));
+        } else if ($ajustPeriod === 'month') {
+            return $date->modify('last day of this month');
+        } else if ($ajustPeriod === 'week') {
+            return $date->modify(($date->format('w') === '0') ? 'today' : 'sunday this week');
+        } else if ($ajustPeriod === 'day') {
+            return $date;//->setTime(0, 0, 0);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param TimePeriodInterface[]|ArrayCollection $timePeriods
      */
     public function addTimePeriods($timePeriods)
     {
@@ -100,11 +176,25 @@ class TimeSpentManager
     }
 
     /**
-     * @param TimePeriod $timePeriod
+     * @param TimePeriodInterface $timePeriod
      */
-    public function addTimePeriod(TimePeriod $timePeriod)
+    public function addTimePeriod(TimePeriodInterface $timePeriod)
     {
         $this->timePeriods->add($timePeriod);
+    }
+
+    /*
+     * ##########################################
+     * ####### Generated getters & setters ######
+     * ##########################################
+     */
+
+    /**
+     * @return ArrayCollection|TimePeriodInterface[]
+     */
+    public function getTimePeriods()
+    {
+        return $this->timePeriods;
     }
 
     /**

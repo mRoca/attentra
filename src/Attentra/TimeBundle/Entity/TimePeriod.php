@@ -12,6 +12,9 @@ class TimePeriod implements TimePeriodInterface
     /** @var \DateTime */
     protected $end;
 
+    /** @var \DateTime */
+    protected $concernedDay;
+
     /** @var string */
     protected $identifier;
 
@@ -96,6 +99,22 @@ class TimePeriod implements TimePeriodInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getConcernedDay()
+    {
+        return $this->concernedDay;
+    }
+
+    /**
+     * @param \DateTime $concernedDay
+     */
+    public function setConcernedDay(\DateTime $concernedDay)
+    {
+        $this->concernedDay = $concernedDay;
     }
 
 }

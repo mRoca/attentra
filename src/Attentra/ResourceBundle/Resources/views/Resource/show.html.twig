@@ -9,6 +9,7 @@
         <dd>
             <a href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" class="btn btn-info"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
             <a href="{{ path('attentra_calendar', { 'identifier':  entity.identifier}) }}" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> {% trans %}Calendar{% endtrans %}</a>
+            <a href="{{ path('attentra_planning', { 'identifier':  entity.identifier}) }}" class="btn btn-success"><span class="glyphicon glyphicon-time"></span> {% trans %}Time spent{% endtrans %}</a>
         </dd>
         <dt>{% trans %}Name{% endtrans %}</dt>
         <dd>{{ entity.name }}</dd>

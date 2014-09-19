@@ -19,84 +19,76 @@
 {% endblock %}
 
 {% block body %}
-    <h1>
-        {% trans %}Planning{% endtrans %}
-        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
-    </h1>
+    <h2>
+        {% trans %}Time spent{% endtrans %}
+        {% if identifier %}- <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+    </h2>
+
+    <div class="form-inline">
+        <label for="planning-start-date">{% trans %}Start{% endtrans %}</label>
+        <input type="date" class="datepicker form-control" value="{{ start.format('Y-m-d') }}" id="planning-start-date"/>
+
+        <label for="planning-end-date">{% trans %}End{% endtrans %}</label>
+        <input type="date" class="datepicker form-control" value="{{ end.format('Y-m-d') }}" id="planning-end-date"/>
+    </div>
 
     {% if timeSpentManager.hasFullPeriod('year') %}
+        <hr/>
         <h2>{% trans %}By year{% endtrans %}</h2>
         <table class="table table-striped table-condensed">
             {% for day in timeSpentManager.datePeriod('year') %}
                 {% if timeSpentManager.isPeriodFull('year', day) %}
                     <tr>
-                        <td>{{ day | date('Y') }}</td>
-                        <td></td>
+                        <td>{{ day.format('Y') }}</td>
+                        <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('year', day).toSeconds) }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
         </table>
     {% endif %}
 
-    {% if timeSpentManager.hasFullPeriod('month') %}
-        <h2>{% trans %}By month{% endtrans %}</h2>
-        <table class="table table-striped table-condensed">
-            {% for day in timeSpentManager.datePeriod('month') %}
-                {% if timeSpentManager.isPeriodFull('month', day) %}
-                    <tr>
-                        <td>{{ day | date('F Y') }}</td>
-                        <td></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    {% endif %}
+    <hr/>
+    <h2>{% trans %}By month{% endtrans %}</h2>
+    <table class="table table-striped table-condensed">
+        {% for day in timeSpentManager.datePeriod('month') %}
+            {% if timeSpentManager.isPeriodFull('month', day) or timeSpentManager.isLastPeriod('month', day) %}
+                <tr class="{{ timeSpentManager.isLastPeriod('month', day) ? 'danger' : '' }}">
+                    <td>{{ day.format('F Y') }}</td>
+                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('month', day).toSeconds) }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
 
-    {% if timeSpentManager.hasFullPeriod('week') %}
-        <h2>{% trans %}By week{% endtrans %}</h2>
-        <table class="table table-striped table-condensed">
-            {% for day in timeSpentManager.datePeriod('week') %}
-                {% if timeSpentManager.isPeriodFull('week', day) %}
-                    <tr>
-                        <td>{{ day | date('W (o)') }}</td>
-                        <td></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    {% endif %}
+    <hr/>
+    <h2>{% trans %}By week{% endtrans %}</h2>
+    <table class="table table-striped table-condensed">
+        {% for day in timeSpentManager.datePeriod('week') %}
+            {% if timeSpentManager.isPeriodFull('week', day) or timeSpentManager.isLastPeriod('week', day) %}
+                <tr class="{{ timeSpentManager.isLastPeriod('week', day) ? 'danger' : '' }}">
+                    <td>
+                        ({{ day.format('W') }})
+                        {{ timeSpentManager.getPeriodStartDate('week', day).format('j F') }} -
+                        {{ timeSpentManager.getPeriodEndDate('week', day).format('j F Y') }}
+                    </td>
+                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('week', day).toSeconds) }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
 
-    {% if timeSpentManager.hasFullPeriod('day') %}
-        <h2>{% trans %}By day{% endtrans %}</h2>
-        <table class="table table-striped table-condensed">
-            {% for day in timeSpentManager.datePeriod('day') %}
-                {% if timeSpentManager.isPeriodFull('day', day) %}
-                    <tr>
-                        <td>{{ day | date('Y-m-d') }}</td>
-                        <td></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    {% endif %}
-
-    {#<div class="panel-group" id="planning-accordion">#}
-    {#<div class="panel panel-default">#}
-    {#<div class="panel-heading">#}
-    {#<h4 class="panel-title">#}
-    {#<a data-toggle="collapse" data-parent="#planning-accordion" href="#collapseOne">#}
-    {#Collapsible Group Item #1#}
-    {#</a>#}
-    {#</h4>#}
-    {#</div>#}
-    {#<div id="collapseOne" class="panel-collapse collapse in">#}
-    {#<div class="panel-body">#}
-    {#<table class="table table-striped table-condensed">#}
-    {#</table>#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
+    <hr/>
+    <h2>{% trans %}By day{% endtrans %}</h2>
+    <table class="table table-striped table-condensed">
+        {% for day in timeSpentManager.datePeriod('day') %}
+            {% if timeSpentManager.isPeriodFull('day', day) %}
+                <tr class="{{ day.format('N') > 5 ? 'info' : '' }}">
+                    <td>{{ day.format('l j F') }}</td>
+                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('day', day).toSeconds) }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
 
     <style type="text/css">
 
@@ -104,7 +96,16 @@
 
     <script type="text/javascript">
         $(function () {
+            var $start = $('#planning-start-date');
+            var $end = $('#planning-end-date');
+            var planningUrl = "{{ path('attentra_planning', {identifier: identifier}) }}";
 
+            function refresh() {
+                document.location = planningUrl + (planningUrl.indexOf('?') > -1 ? '&' : '?') + 'start=' + $start.val() + '&end=' + $end.val();
+            }
+
+            $start.on('change', refresh);
+            $end.on('change', refresh);
         });
     </script>
 {% endblock %}

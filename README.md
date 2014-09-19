@@ -18,12 +18,13 @@ A second project (soon available) will permit to use a Raspberry Pi as a time cl
 ## TODO
 
 * Migrations
-* Event update & creation from calendar
+* Event creation from calendar
 * Data exports
 * Personnal dashboard
 * Authentication layer
 * Users management : each user can access to one or many resources (consumers), many groups of resources (team leaders), or to all resources (admins)
 * Improve the API documentation generated markdown
+* Adapt to see spent time per hour
 
 ## Usage
 

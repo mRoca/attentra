@@ -44,6 +44,7 @@
                                 <a class="btn btn-default" href="{{ path('attentra_resource_edit', { 'id': entity.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-pencil"></span></a>
                                 <a class="btn btn-info" href="{{ path('attentra_timeinput', { 'identifier':  entity.identifier}) }}" title="{% trans %}Time inputs{% endtrans %}"><span class="glyphicon glyphicon-list"></span> {% trans %}Time inputs{% endtrans %}</a>
                                 <a class="btn btn-primary" href="{{ path('attentra_calendar', { 'identifier':  entity.identifier}) }}" title="{% trans %}Calendar{% endtrans %}"><span class="glyphicon glyphicon-calendar"></span> {% trans %}Calendar{% endtrans %}</a>
+                                <a class="btn btn-success" href="{{ path('attentra_planning', { 'identifier':  entity.identifier}) }}" title="{% trans %}Time spent{% endtrans %}"><span class="glyphicon glyphicon-time"></span> {% trans %}Time spent{% endtrans %}</a>
                             </div>
                         </td>
                     </tr>

@@ -4,15 +4,11 @@ namespace Attentra\TimeBundle\Entity;
 
 interface TimePeriodInterface
 {
-    /**
-     * @param boolean $hasError
-     */
-    public function setHasError($hasError);
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function getHasError();
+    public function getIdentifier();
 
     /**
      * @param string $identifier
@@ -20,9 +16,29 @@ interface TimePeriodInterface
     public function setIdentifier($identifier);
 
     /**
+     * @return boolean
+     */
+    public function getHasError();
+
+    /**
+     * @param boolean $hasError
+     */
+    public function setHasError($hasError);
+
+    /**
+     * @return \DateTime
+     */
+    public function getStart();
+
+    /**
      * @param \DateTime $start
      */
     public function setStart(\DateTime $start);
+
+    /**
+     * @return \DateTime
+     */
+    public function getEnd();
 
     /**
      * @param \DateTime $end
@@ -32,15 +48,11 @@ interface TimePeriodInterface
     /**
      * @return \DateTime
      */
-    public function getEnd();
+    public function getConcernedDay();
 
     /**
-     * @return string
+     * @param \DateTime $concernedDay
      */
-    public function getIdentifier();
+    public function setConcernedDay(\DateTime $concernedDay);
 
-    /**
-     * @return \DateTime
-     */
-    public function getStart();
 }

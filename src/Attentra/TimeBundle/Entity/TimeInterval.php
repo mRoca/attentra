@@ -30,8 +30,8 @@ class TimeInterval extends \DateInterval
     /**
      * @return int
      */
-    public function getSeconds()
+    public function toSeconds()
     {
-        return intval($this->format('%a')) * 24 * 3600;
+        return (new \DateTime('@0'))->add($this)->getTimestamp();
     }
 } 

@@ -49,18 +49,19 @@ class PlanningController extends Controller
         //By default, display one month
         if ($start === false) {
             $start = clone $end;
-            $start->sub(new \DateInterval('P15M'));
+            $start->sub(new \DateInterval('P1M1D'));
         }
 
         $start = $this->timePeriodParser->ajustStartDate($start);
 
         /** @var EntityManager $em */
-        $em         = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var TimeInput[] $timeinputs */
         $timeinputs = $em->getRepository('AttentraTimeBundle:TimeInput')->qbFindByDates($identifier, $start, $end)->getQuery()->execute();
 
         $timeSpentManager = new TimeSpentManager($start, $end);
-        $timeSpentManager->addTimePeriods($this->timePeriodParser->timeInputsToSpentTimeByDay($timeinputs));
-
+        $timeSpentManager->addTimePeriods($this->timePeriodParser->timeInputsToEvents($timeinputs));
 
         return array(
             'identifier'       => $identifier,
