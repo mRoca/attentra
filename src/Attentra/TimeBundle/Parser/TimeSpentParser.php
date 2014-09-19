@@ -1,11 +1,13 @@
 <?php
 
-namespace Attentra\TimeBundle\Entity;
+namespace Attentra\TimeBundle\Parser;
 
 use Attentra\CoreBundle\Collections\ArrayCollection;
+use Attentra\TimeBundle\Entity\TimeInterval;
+use Attentra\TimeBundle\Entity\TimePeriod;
+use Attentra\TimeBundle\Entity\TimePeriodInterface;
 
-//TODO Manage less than days
-class TimeSpentManager
+class TimeSpentParser
 {
 
     /** @var \DateTime */
@@ -27,7 +29,6 @@ class TimeSpentManager
         $this->start       = $start;
         $this->end         = $end;
     }
-
 
     /**
      * @param string $ajustPeriod day|week|month|year
@@ -138,7 +139,7 @@ class TimeSpentManager
         } else if ($ajustPeriod === 'week') {
             return $date->modify(($date->format('w') === '0') ? 'monday last week' : 'monday this week');
         } else if ($ajustPeriod === 'day') {
-            return $date;//->setTime(0, 0, 0);
+            return $date;
         }
 
         return null;
@@ -161,7 +162,7 @@ class TimeSpentManager
         } else if ($ajustPeriod === 'week') {
             return $date->modify(($date->format('w') === '0') ? 'today' : 'sunday this week');
         } else if ($ajustPeriod === 'day') {
-            return $date;//->setTime(0, 0, 0);
+            return $date;
         }
 
         return null;
