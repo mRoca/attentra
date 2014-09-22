@@ -43,7 +43,7 @@ class TimeSpentParser
             'year'  => 'P1Y',
         );
 
-        return new \DatePeriod($this->start, new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $this->end);
+        return new \DatePeriod($this->getPeriodStartDate($ajustPeriod, $this->start), new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $this->getPeriodEndDate($ajustPeriod, $this->end));
     }
 
     /**

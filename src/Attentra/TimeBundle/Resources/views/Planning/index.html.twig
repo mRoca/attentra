@@ -30,6 +30,9 @@
 
         <label for="planning-end-date">{% trans %}End{% endtrans %}</label>
         <input type="date" class="datepicker form-control" value="{{ end.format('Y-m-d') }}" id="planning-end-date"/>
+
+        <label for="display-seconds">{% trans %}Display seconds{% endtrans %}</label>
+        <input type="checkbox" id="display-seconds">
     </div>
 
     {% if timeSpentManager.hasFullPeriod('year') %}
@@ -104,8 +107,12 @@
                 document.location = planningUrl + (planningUrl.indexOf('?') > -1 ? '&' : '?') + 'start=' + $start.val() + '&end=' + $end.val();
             }
 
-            $start.on('change', refresh);
-            $end.on('change', refresh);
+            $start.on('changeDate', refresh);
+            $end.on('changeDate', refresh);
+
+            $('#display-seconds').on('change', function () {
+                $('.duration-seconds').toggle($(this).is(':checked'));
+            }).change();
         });
     </script>
 {% endblock %}

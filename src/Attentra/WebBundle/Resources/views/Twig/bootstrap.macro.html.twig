@@ -41,15 +41,13 @@
 {% endmacro %}
 
 {% macro duration(duration, useShortSyntax) %}
-    {% spaceless %}
-        {% set hours = (duration / 3600) | round(0, 'floor') %}
-        {% set minutes = ((duration % 3600) / 60) | round(0, 'floor') %}
-        {% set secondes = ((duration % 3600) % 60) %}
+    {% set hours = (duration / 3600) | round(0, 'floor') %}
+    {% set minutes = ((duration % 3600) / 60) | round(0, 'floor') %}
+    {% set secondes = ((duration % 3600) % 60) %}
 
-        {% if(hours) %}{{ hours }} {{ useShortSyntax ? 'h' : ('hour|hours' | transchoice(hours)) }}{% endif %}
-        {% if(minutes) %}{{ minutes }} {{ useShortSyntax ? 'm' : ('minute|minutes' | transchoice(minutes)) }}{% endif %}
-        {% if(secondes) %}{{ secondes }} {{ useShortSyntax ? 's' : ('seconde|secondes' | transchoice(secondes)) }}{% endif %}
-    {% endspaceless %}
+    {% if(hours) %} <span class="duration-hours">{{ hours }} {{ useShortSyntax ? 'h' : ('hour|hours' | transchoice(hours)) }}</span>{% endif %}
+    {% if(minutes) %} <span class="duration-minutes">{{ minutes }} {{ useShortSyntax ? 'm' : ('minute|minutes' | transchoice(minutes)) }}</span>{% endif %}
+    {% if(secondes) %} <span class="duration-seconds">{{ secondes }} {{ useShortSyntax ? 's' : ('seconde|secondes' | transchoice(secondes)) }}</span>{% endif %}
 {% endmacro %}
 
 {% macro knp_pagination_chevron(pagination, key, label) %}
