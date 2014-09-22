@@ -55,7 +55,7 @@
     <table class="table table-striped table-condensed">
         {% for day in timeSpentManager.datePeriod('month') %}
             {% if timeSpentManager.isPeriodFull('month', day) or timeSpentManager.isLastPeriod('month', day) %}
-                <tr class="{{ timeSpentManager.isLastPeriod('month', day) ? 'danger' : '' }}">
+                <tr class="{{ not timeSpentManager.isPeriodFull('month', day) ? 'danger' : '' }}">
                     <td>{{ day.format('F Y') }}</td>
                     <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('month', day).toSeconds) }}</td>
                 </tr>
@@ -68,7 +68,7 @@
     <table class="table table-striped table-condensed">
         {% for day in timeSpentManager.datePeriod('week') %}
             {% if timeSpentManager.isPeriodFull('week', day) or timeSpentManager.isLastPeriod('week', day) %}
-                <tr class="{{ timeSpentManager.isLastPeriod('week', day) ? 'danger' : '' }}">
+                <tr class="{{ not timeSpentManager.isPeriodFull('week', day) ? 'danger' : '' }}">
                     <td>
                         ({{ day.format('W') }})
                         {{ timeSpentManager.getPeriodStartDate('week', day).format('j F') }} -

@@ -48,6 +48,9 @@ class PlanningController extends Controller
         if ($start === false) {
             $start = clone $end;
             $start->sub(new \DateInterval('P1M1D'));
+        } elseif ($end < $start) {
+            $end = clone $start;
+            $end->add(new \DateInterval('P1M1D'));
         }
 
         $start = $this->timePeriodParser->ajustStartDate($start);

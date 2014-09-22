@@ -43,7 +43,13 @@ class TimeSpentParser
             'year'  => 'P1Y',
         );
 
-        return new \DatePeriod($this->getPeriodStartDate($ajustPeriod, $this->start), new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $this->getPeriodEndDate($ajustPeriod, $this->end));
+        $periodStart = $this->getPeriodStartDate($ajustPeriod, $this->start);
+        $periodEnd   = $this->getPeriodEndDate($ajustPeriod, $this->end);
+
+        //Include the end date
+        $periodEnd->modify('+1 day');
+
+        return new \DatePeriod($periodStart, new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $periodEnd);
     }
 
     /**
@@ -130,7 +136,6 @@ class TimeSpentParser
     public function getPeriodStartDate($ajustPeriod, \DateTime $concernedDate)
     {
         $date = clone $concernedDate;
-        $date->setTime(0, 0, 0);
 
         if ($ajustPeriod === 'year') {
             return $date->modify('first day of January' . $date->format('Y'));
@@ -153,7 +158,6 @@ class TimeSpentParser
     public function getPeriodEndDate($ajustPeriod, \DateTime $concernedDate)
     {
         $date = clone $concernedDate;
-        $date->setTime(0, 0, 0);
 
         if ($ajustPeriod === 'year') {
             return $date->modify('last day of December ' . $date->format('Y'));
