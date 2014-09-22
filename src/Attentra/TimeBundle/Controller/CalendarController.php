@@ -97,7 +97,7 @@ class CalendarController extends Controller
     {
         $post = $request->request->all();
 
-        if (!isset($post['identifier'])) {
+        if (!isset($post['identifier']) || !$post['identifier']) {
             throw new BadRequestHttpException("Event identifier not found.");
         }
 
@@ -149,7 +149,7 @@ class CalendarController extends Controller
                     throw $this->createNotFoundException('The TimeInput entity find has a different identifier.');
                 }
 
-                //No date, removing => TODO add an option to choose this action
+                //No date, removing => TODO add a checkbox to choose this action
                 if ($newDate === null) {
                     $em->remove($timeInput);
                 } else {

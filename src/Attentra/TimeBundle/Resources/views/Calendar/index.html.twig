@@ -26,10 +26,14 @@
 {% endblock %}
 
 {% block body %}
+    <a href="#" class="btn btn-primary pull-right" id="event-add">{% trans %}Add a new event{% endtrans %}</a>
+
     <h1>
         {% trans %}Time inputs{% endtrans %}
         {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
     </h1>
+
+    <div class="clearfix"></div>
 
     <div id="timeinputs-calendar"></div>
 
@@ -47,6 +51,7 @@
                     <fieldset>
                         <div class="form-group">
                             <label for="event-identifier" class="control-label required">{% trans %}Identifier{% endtrans %} *</label>
+
                             <div class="input-group">
                                 <input type="text" maxlength="255" required="required" class="form-control" id="event-identifier">
                                 <span class="input-group-btn">
@@ -103,10 +108,41 @@
 
     <script type="text/javascript">
         $(function () {
+            var currentIdentifier = "{{ identifier | e('js') }}";
             var $calendar = $('#timeinputs-calendar');
             var $eventModal = $('#event-modal');
             var timeInputLink = "{{ path('attentra_timeinput_show', {id: 0}) }}";
             var calendarLink = "{{ path('attentra_calendar', {identifier: 0}) }}";
+
+            function displayEventForm(_event) {
+
+                if ( !_event ) _event = {};
+
+                if ( !_event.id ) {
+                    _event.id = '';
+                    _event.identifier = _event.identifier || currentIdentifier;
+                    _event.title = _event.title || '';
+                    _event.endIsDefined = _event.endIsDefined || false;
+                    _event.start = _event.start || '';
+                }
+
+                var id = "" + _event.id;
+
+                $('#event-identifier').val(_event.identifier).attr('readonly', _event.identifier != '');
+
+                $('#event-start-id').val(id.split('-').length ? id.split('-')[0] : '');
+                $('#event-start-date').val(_event.start ? _event.start.format('YYYY-MM-DD') : '').trigger('keyup');
+                $('#event-start-time').val(_event.start ? _event.start.format('HH:mm:ss') : '');
+                $('#event-start-link, #event-identifier-link').toggle(_event.start);
+
+                $('#event-end-id').val(_event.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
+                $('#event-end-date').val(_event.endIsDefined ? _event.end.format('YYYY-MM-DD') : (_event.start ? _event.start.format('YYYY-MM-DD') : '')).trigger('keyup');
+                $('#event-end-time').val(_event.endIsDefined ? _event.end.format('HH:mm:ss') : '');
+                $('#event-end-link').toggle(_event.endIsDefined).closest('.form-group').toggleClass('has-error', (_event.start != '' && !_event.endIsDefined));
+
+                $eventModal.modal();
+            }
+
             $calendar.fullCalendar({
                 lang: $('html').attr('lang'),
                 header: {
@@ -133,19 +169,7 @@
                     $calendar.fullCalendar('gotoDate', date);
                 },
                 eventClick: function (calEvent, jsEvent, view) {
-                    var id = "" + calEvent.id;
-                    $('#event-identifier').attr('readonly', true).val(calEvent.identifier || calEvent.title);
-
-                    $('#event-start-id').val(id.split('-')[0]);
-                    $('#event-start-date').val(calEvent.start.format('YYYY-MM-DD')).trigger('keyup');
-                    $('#event-start-time').val(calEvent.start.format('HH:mm:ss'));
-
-                    $('#event-end-id').val(calEvent.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
-                    $('#event-end-date').val(calEvent.endIsDefined ? calEvent.end.format('YYYY-MM-DD') : calEvent.start.format('YYYY-MM-DD')).trigger('keyup');
-                    $('#event-end-time').val(calEvent.endIsDefined ? calEvent.end.format('HH:mm:ss') : '');
-                    $('#event-end-link').toggle(calEvent.endIsDefined).closest('.form-group').toggleClass('has-error', !calEvent.endIsDefined);
-
-                    $eventModal.modal();
+                    displayEventForm(calEvent);
                 }
             });
 
@@ -209,6 +233,10 @@
                     $eventModal.modal('hide');
                     $calendar.fullCalendar('refetchEvents');
                 });
+            });
+
+            $('#event-add').on('click', function () {
+                displayEventForm();
             });
         });
     </script>
