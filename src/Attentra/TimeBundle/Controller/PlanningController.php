@@ -64,8 +64,11 @@ class PlanningController extends Controller
         $timeSpentManager = new TimeSpentParser($start, $end);
         $timeSpentManager->addTimePeriods($this->timePeriodParser->timeInputsToEvents($timeinputs));
 
+        $identifiers = $em->getRepository('AttentraResourceBundle:Resource')->findBy(array(), array('name' => 'asc'));
+
         return array(
             'identifier'       => $identifier,
+            'identifiers'      => $identifiers,
             'timeSpentManager' => $timeSpentManager,
             'start'            => $start,
             'end'              => $end,

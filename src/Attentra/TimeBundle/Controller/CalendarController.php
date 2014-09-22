@@ -41,7 +41,15 @@ class CalendarController extends Controller
     public function indexAction()
     {
         $identifier = $this->get('request')->query->get('identifier');
-        return array('identifier' => $identifier);
+
+        /** @var EntityManager $em */
+        $em          = $this->getDoctrine()->getManager();
+        $identifiers = $em->getRepository('AttentraResourceBundle:Resource')->findBy(array(), array('name' => 'asc'));
+
+        return array(
+            'identifier'  => $identifier,
+            'identifiers' => $identifiers,
+        );
     }
 
     /**

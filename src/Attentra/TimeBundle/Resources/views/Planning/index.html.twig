@@ -35,6 +35,23 @@
         <input type="checkbox" id="display-seconds">
     </div>
 
+    {% if identifiers is defined %}
+        <br/>
+        <div class="row">
+            <div class="col-md-1">
+                <label for="planning-identifier">{% trans %}Resource{% endtrans %}</label>
+            </div>
+            <div class="col-md-4">
+                <select id="planning-identifier" class="chosen">
+                    <option value="">{% trans %}All{% endtrans %}</option>
+                    {% for curIdentifier in identifiers %}
+                        <option value="{{ curIdentifier.identifier }}" {{ identifier == curIdentifier.identifier ? 'selected' : '' }}>{{ curIdentifier }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    {% endif %}
+
     {% if timeSpentManager.hasFullPeriod('year') %}
         <hr/>
         <h2>{% trans %}By year{% endtrans %}</h2>
@@ -101,14 +118,16 @@
         $(function () {
             var $start = $('#planning-start-date');
             var $end = $('#planning-end-date');
-            var planningUrl = "{{ path('attentra_planning', {identifier: identifier}) }}";
+            var $identifier = $('#planning-identifier');
+            var planningUrl = "{{ path('attentra_planning') }}";
 
             function refresh() {
-                document.location = planningUrl + (planningUrl.indexOf('?') > -1 ? '&' : '?') + 'start=' + $start.val() + '&end=' + $end.val();
+                document.location = planningUrl + '?identifier=' + $identifier.val() + '&start=' + $start.val() + '&end=' + $end.val();
             }
 
             $start.on('changeDate', refresh);
             $end.on('changeDate', refresh);
+            $identifier.on('change', refresh);
 
             $('#display-seconds').on('change', function () {
                 $('.duration-seconds').toggle($(this).is(':checked'));

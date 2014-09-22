@@ -35,6 +35,24 @@
 
     <div class="clearfix"></div>
 
+    {% if identifiers is defined %}
+        <br/>
+        <div class="row">
+            <div class="col-md-1">
+                <label for="agenda-identifier">{% trans %}Resource{% endtrans %}</label>
+            </div>
+            <div class="col-md-2">
+                <select id="agenda-identifier" class="chosen">
+                    <option value="">{% trans %}All{% endtrans %}</option>
+                    {% for curIdentifier in identifiers %}
+                        <option value="{{ curIdentifier.identifier }}" {{ identifier == curIdentifier.identifier ? 'selected' : '' }}>{{ curIdentifier }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br/>
+    {% endif %}
+
     <div id="timeinputs-calendar"></div>
 
     <div class="modal fade" id="event-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -237,6 +255,10 @@
 
             $('#event-add').on('click', function () {
                 displayEventForm();
+            });
+
+            $('#agenda-identifier').on('change', function () {
+                document.location = calendarLink.replace('=0', '=' + $(this).val());
             });
         });
     </script>
