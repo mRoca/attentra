@@ -76,7 +76,8 @@ class TimeSpentParser
      */
     public function isPeriodFull($ajustPeriod, \DateTime $concernedDate)
     {
-        return $this->start <= $this->getPeriodStartDate($ajustPeriod, $concernedDate) && $this->end >= $this->getPeriodEndDate($ajustPeriod, $concernedDate);
+        return $this->getPeriodStartDate('day', $this->start) <= $this->getPeriodStartDate($ajustPeriod, $concernedDate)
+        && $this->getPeriodStartDate('day', $this->end) >= $this->getPeriodEndDate($ajustPeriod, $concernedDate);
     }
 
     /**
@@ -86,7 +87,8 @@ class TimeSpentParser
      */
     public function isLastPeriod($ajustPeriod, \DateTime $concernedDate)
     {
-        return $concernedDate >= $this->getPeriodStartDate($ajustPeriod, $this->end) && $concernedDate <= $this->getPeriodEndDate($ajustPeriod, $this->end);
+        return $concernedDate >= $this->getPeriodStartDate($ajustPeriod, $this->end)
+        && $concernedDate <= $this->getPeriodEndDate($ajustPeriod, $this->end);
     }
 
     /**
@@ -96,8 +98,7 @@ class TimeSpentParser
      */
     public function getSpentTimeIntervalByPeriod($ajustPeriod, \DateTime $concernedDate)
     {
-        $spentTime = new TimeInterval('PT0S');
-
+        $spentTime   = new TimeInterval('PT0S');
         $timePeriods = $this->getTimePeriodsByPeriod($ajustPeriod, $concernedDate);
         foreach ($timePeriods as $timePeriod) {
             if ($timePeriod->getEnd()) {
@@ -136,6 +137,7 @@ class TimeSpentParser
     public function getPeriodStartDate($ajustPeriod, \DateTime $concernedDate)
     {
         $date = clone $concernedDate;
+        $date->setTime(0, 0, 0);
 
         if ($ajustPeriod === 'year') {
             return $date->modify('first day of January' . $date->format('Y'));
@@ -158,6 +160,7 @@ class TimeSpentParser
     public function getPeriodEndDate($ajustPeriod, \DateTime $concernedDate)
     {
         $date = clone $concernedDate;
+        $date->setTime(0, 0, 0);
 
         if ($ajustPeriod === 'year') {
             return $date->modify('last day of December ' . $date->format('Y'));

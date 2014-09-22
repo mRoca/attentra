@@ -18,10 +18,10 @@ class LoadTimeInputData extends AbstractFixture implements OrderedFixtureInterfa
     public function load(ObjectManager $manager)
     {
         self::$timeinputs = [];
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 200; $i++) {
             $timeinput = new TimeInput();
-            $timeinput->setDatetime(new \DateTime(rand(0, 700000) . 'seconds ago'));
-            $timeinput->setIdentifier('1234-' . ($i % 20));
+            $timeinput->setDatetime(new \DateTime(rand(0, 60 * 24 * 3600) . 'seconds ago'));
+            $timeinput->setIdentifier('1234-' . ($i % 4));
 
             $manager->persist($timeinput);
 
