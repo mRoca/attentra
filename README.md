@@ -4,7 +4,7 @@
 Caution : WIP
 
 This project allows to monitor the working hours by employees, equipment rentals ...
-A second project (soon available) will permit to use a Raspberry Pi as a time clock, using RFID chips.
+Another project (https://github.com/mRoca/attentra-worker) allows to use a Raspberry Pi as a time clock, using RFID chips.
 
 ## Features
 
