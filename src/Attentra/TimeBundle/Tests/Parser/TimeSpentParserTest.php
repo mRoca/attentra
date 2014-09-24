@@ -2,16 +2,18 @@
 
 namespace Attentra\TimeBundle\Tests\Parser;
 
+use Attentra\CoreBundle\Tests\TestCase;
 use Attentra\TimeBundle\Entity\TimePeriod;
 use Attentra\TimeBundle\Parser\TimeSpentParser;
 
-class TimeSpentParserTest extends \PHPUnit_Framework_TestCase
+class TimeSpentParserTest extends TestCase
 {
 
     public function testGetPeriodStartDate()
     {
         $parser = new TimeSpentParser(new \DateTime('2014-08-23 03:00:00'), new \DateTime('2014-09-23 03:00:00'));
 
+        $this->assertEquals(null, $parser->getPeriodStartDate('notaperiod', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-28 00:00:00'), $parser->getPeriodStartDate('day', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-25 00:00:00'), $parser->getPeriodStartDate('week', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-01 00:00:00'), $parser->getPeriodStartDate('month', new \DateTime('2014-08-28 03:00:00')));
@@ -22,6 +24,7 @@ class TimeSpentParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new TimeSpentParser(new \DateTime('2014-08-23 03:00:00'), new \DateTime('2014-09-23 03:00:00'));
 
+        $this->assertEquals(null, $parser->getPeriodEndDate('notaperiod', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-28 00:00:00'), $parser->getPeriodEndDate('day', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-31 00:00:00'), $parser->getPeriodEndDate('week', new \DateTime('2014-08-28 03:00:00')));
         $this->assertEquals(new \DateTime('2014-08-31 00:00:00'), $parser->getPeriodEndDate('month', new \DateTime('2014-08-28 03:00:00')));
@@ -32,7 +35,9 @@ class TimeSpentParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new TimeSpentParser(new \DateTime('2014-08-23 03:00:00'), new \DateTime('2014-09-23 03:00:00'));
 
-        $this->assertInstanceOf('DatePeriod', $parser->getDatePeriod());
+        $this->assertException(function () use ($parser) {
+            $parser->getDatePeriod('notaperiod');
+        }, 'ErrorException');
 
         $this->assertEqualsDatePeriod(new \DatePeriod(new \DateTime('2014-08-23 00:00:00'), new \DateInterval('P1D'), new \DateTime('2014-09-24 00:00:00')), $parser->getDatePeriod('day'));
         $this->assertEqualsDatePeriod(new \DatePeriod(new \DateTime('2014-08-18 00:00:00'), new \DateInterval('P1W'), new \DateTime('2014-09-28 00:00:00')), $parser->getDatePeriod('week'));
@@ -150,18 +155,4 @@ class TimeSpentParserTest extends \PHPUnit_Framework_TestCase
 
         return $timePeriods;
     }
-
-    protected function assertEqualsDatePeriod(\DatePeriod $expected, \DatePeriod $actual)
-    {
-        $expectedArray = [];
-        foreach ($expected as $dayDate) {
-            $expectedArray[] = $dayDate;
-        }
-
-        foreach ($actual as $i => $dayDate) {
-            $this->assertArrayHasKey($i, $expectedArray);
-            $this->assertEquals($expectedArray[$i], $dayDate);
-        }
-    }
-
 }

@@ -35,7 +35,7 @@ class TimeSpentParser
      * @throws \ErrorException
      * @return \DatePeriod
      */
-    public function getDatePeriod($ajustPeriod = 'day')
+    public function getDatePeriod($ajustPeriod)
     {
         $intervals = array(
             'day'   => 'P1D',

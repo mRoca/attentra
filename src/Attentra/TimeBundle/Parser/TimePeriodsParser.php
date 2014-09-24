@@ -15,17 +15,11 @@ class TimePeriodsParser implements TimePeriodsParserInterface
     protected $workDayStartHour = '00:00:00';
 
     /**
-     * Permit to group times inputs by weeks. Numeric representation of the day of the week, 0 (for Sunday) through 6 (for Saturday)
-     * @var string
-     */
-    protected $workWeekStartDay = '1';
-
-    /**
      * @var string
      */
     protected $timePeriodClass;
 
-    public function __construct($timePeriodClass, $workDayStartHour = null, $workWeekStartDay = null)
+    public function __construct($timePeriodClass, $workDayStartHour = null)
     {
         //Time format validation
         if ($workDayStartHour !== null) {
@@ -33,14 +27,6 @@ class TimePeriodsParser implements TimePeriodsParserInterface
                 throw new \ErrorException('The hour format is invalid');
             }
             $this->workDayStartHour = $workDayStartHour;
-        }
-
-        //Day format validation
-        if ($workWeekStartDay !== null) {
-            if (!($workWeekStartDay >= 0 && $workWeekStartDay <= 6)) {
-                throw new \ErrorException('The day format is invalid');
-            }
-            $this->workWeekStartDay = $workWeekStartDay;
         }
 
         $this->timePeriodClass = $timePeriodClass;
@@ -69,7 +55,6 @@ class TimePeriodsParser implements TimePeriodsParserInterface
         $end->setTime($workDaySep['hour'], $workDaySep['minute'], $workDaySep['second']);
         return $end;
     }
-
 
     /**
      * @param TimeInputInterface[] $timeInputs

@@ -2,12 +2,23 @@
 
 namespace Attentra\TimeBundle\Tests\Parser;
 
+use Attentra\CoreBundle\Tests\TestCase;
 use Attentra\TimeBundle\Entity\TimeInput;
 use Attentra\TimeBundle\Entity\TimeInterval;
 use Attentra\TimeBundle\Parser\TimePeriodsParser;
 
-class TimePeriodsParserTest extends \PHPUnit_Framework_TestCase
+class TimePeriodsParserTest extends TestCase
 {
+    public function testConstruct()
+    {
+        $this->assertException(function () {
+            new TimePeriodsParser('Attentra\TimeBundle\Entity\TimePeriod', 'imnotatimeformat');
+        }, 'ErrorException');
+
+        $this->assertException(function () {
+            new TimePeriodsParser('Attentra\TimeBundle\Entity\TimePeriod', 'imnotatimeformat');
+        }, 'ErrorException');
+    }
 
     public function testAjustStartDate()
     {
@@ -24,7 +35,7 @@ class TimePeriodsParserTest extends \PHPUnit_Framework_TestCase
         $parser = new TimePeriodsParser('Attentra\TimeBundle\Entity\TimePeriod', '03:01:05');
 
         $expectedDate = new \DateTime('2014-09-09 03:01:05');
-        $parsedDdate  = $parser->ajustStartDate(new \DateTime('2014-09-09 01:01:01'));
+        $parsedDdate  = $parser->ajustEndDate(new \DateTime('2014-09-09 01:01:01'));
 
         $this->assertEquals($expectedDate, $parsedDdate);
     }
@@ -168,5 +179,4 @@ class TimePeriodsParserTest extends \PHPUnit_Framework_TestCase
 
         return $timeInputs;
     }
-
 }

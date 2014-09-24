@@ -5,7 +5,7 @@ namespace Attentra\CoreBundle\Tests\Controller;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class RestWebTestCase extends WebTestCase
+abstract class RestWebTestCase extends WebTestCase
 {
     /**
      * @param $expected
