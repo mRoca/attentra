@@ -22,6 +22,17 @@ class TimePeriod implements TimePeriodInterface
     protected $hasError = false;
 
     /**
+     * @return \DateTime
+     */
+    public function getConcernedDay()
+    {
+        if (!$this->concernedDay && $this->start) {
+            return new \DateTime($this->start->format('Y-m-d'));
+        }
+        return $this->concernedDay;
+    }
+
+    /**
      * @param \DateTime $end
      */
     public function setEnd(\DateTime $end)
@@ -101,13 +112,6 @@ class TimePeriod implements TimePeriodInterface
         return $this->id;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getConcernedDay()
-    {
-        return $this->concernedDay;
-    }
 
     /**
      * @param \DateTime $concernedDay

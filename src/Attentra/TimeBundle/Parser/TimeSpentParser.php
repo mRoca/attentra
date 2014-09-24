@@ -32,6 +32,7 @@ class TimeSpentParser
 
     /**
      * @param string $ajustPeriod day|week|month|year
+     * @throws \ErrorException
      * @return \DatePeriod
      */
     public function getDatePeriod($ajustPeriod = 'day')
@@ -43,13 +44,17 @@ class TimeSpentParser
             'year'  => 'P1Y',
         );
 
+        if (!isset($intervals[$ajustPeriod])) {
+            throw new \ErrorException('Invalid period');
+        }
+
         $periodStart = $this->getPeriodStartDate($ajustPeriod, $this->start);
         $periodEnd   = $this->getPeriodEndDate($ajustPeriod, $this->end);
 
         //Include the end date
         $periodEnd->modify('+1 day');
 
-        return new \DatePeriod($periodStart, new \DateInterval(isset($intervals[$ajustPeriod]) ? $intervals[$ajustPeriod] : 'P1D'), $periodEnd);
+        return new \DatePeriod($periodStart, new \DateInterval($intervals[$ajustPeriod]), $periodEnd);
     }
 
     /**
@@ -58,7 +63,7 @@ class TimeSpentParser
      */
     public function hasFullPeriod($ajustPeriod)
     {
-        $period = $this->getDatePeriod();
+        $period = $this->getDatePeriod($ajustPeriod);
         foreach ($period as $date) {
             /** @var \DateTime $date */
             if ($this->isPeriodFull($ajustPeriod, $date)) {
@@ -94,24 +99,6 @@ class TimeSpentParser
     /**
      * @param string $ajustPeriod
      * @param \DateTime $concernedDate
-     * @return TimeInterval
-     */
-    public function getSpentTimeIntervalByPeriod($ajustPeriod, \DateTime $concernedDate)
-    {
-        $spentTime   = new TimeInterval('PT0S');
-        $timePeriods = $this->getTimePeriodsByPeriod($ajustPeriod, $concernedDate);
-        foreach ($timePeriods as $timePeriod) {
-            if ($timePeriod->getEnd()) {
-                $spentTime->add($timePeriod->getStart()->diff($timePeriod->getEnd()));
-            }
-        }
-
-        return $spentTime;
-    }
-
-    /**
-     * @param string $ajustPeriod
-     * @param \DateTime $concernedDate
      * @return ArrayCollection|TimePeriod[]
      */
     public function getTimePeriodsByPeriod($ajustPeriod, \DateTime $concernedDate)
@@ -127,6 +114,24 @@ class TimeSpentParser
         }
 
         return $timePeriods;
+    }
+
+    /**
+     * @param string $ajustPeriod
+     * @param \DateTime $concernedDate
+     * @return TimeInterval
+     */
+    public function getSpentTimeIntervalByPeriod($ajustPeriod, \DateTime $concernedDate)
+    {
+        $spentTime   = new TimeInterval('PT0S');
+        $timePeriods = $this->getTimePeriodsByPeriod($ajustPeriod, $concernedDate);
+        foreach ($timePeriods as $timePeriod) {
+            if ($timePeriod->getEnd()) {
+                $spentTime->add($timePeriod->getStart()->diff($timePeriod->getEnd()));
+            }
+        }
+
+        return $spentTime;
     }
 
     /**
@@ -206,14 +211,6 @@ class TimeSpentParser
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
-    /**
      * @param \DateTime $end
      */
     public function setEnd($end)
@@ -224,9 +221,9 @@ class TimeSpentParser
     /**
      * @return \DateTime
      */
-    public function getStart()
+    public function getEnd()
     {
-        return $this->start;
+        return $this->end;
     }
 
     /**
@@ -235,5 +232,13 @@ class TimeSpentParser
     public function setStart($start)
     {
         $this->start = $start;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStart()
+    {
+        return $this->start;
     }
 }

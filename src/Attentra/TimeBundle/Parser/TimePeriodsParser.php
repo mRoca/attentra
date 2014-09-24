@@ -48,7 +48,6 @@ class TimePeriodsParser implements TimePeriodsParserInterface
 
     /**
      * @param \DateTime $start
-     * @param string $adjustPeriod day|week|month|year
      * @return \DateTime
      */
     public function ajustStartDate(\DateTime $start)
@@ -61,7 +60,6 @@ class TimePeriodsParser implements TimePeriodsParserInterface
 
     /**
      * @param \DateTime $end
-     * @param string $ajustPeriod day|week|month|year
      * @return \DateTime
      */
     public function ajustEndDate(\DateTime $end)
@@ -133,7 +131,6 @@ class TimePeriodsParser implements TimePeriodsParserInterface
         return $spentTime;
     }
 
-
     /**
      * @param TimeInputInterface $start
      * @param TimeInputInterface $end
@@ -186,6 +183,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
     }
 
     /**
+     * Returns the working day of a time input, using the work day separator hour
      * @param \DateTime $datetime
      * @param bool $returnString
      * @return \DateTime|string
@@ -197,7 +195,7 @@ class TimePeriodsParser implements TimePeriodsParserInterface
         $workDaySep = $this->getWorkDayStartHour(true);
         $datetime->sub(new \DateInterval(sprintf('PT%sH%sM%sS', $workDaySep['hour'], $workDaySep['minute'], $workDaySep['second'])));
 
-        return $returnString ? $datetime->format('Y-m-d') : $datetime;
+        return $returnString ? $datetime->format('Y-m-d') : new \DateTime($datetime->format('Y-m-d'));
     }
 
     /**
