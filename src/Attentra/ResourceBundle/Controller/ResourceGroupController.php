@@ -3,10 +3,8 @@
 namespace Attentra\ResourceBundle\Controller;
 
 use Attentra\CoreBundle\Form\Type\LinkButtonType;
-use Attentra\ResourceBundle\Entity\Resource;
 use Attentra\ResourceBundle\Entity\ResourceGroup;
 use Attentra\ResourceBundle\Form\ResourceGroupType;
-use Attentra\ResourceBundle\Form\ResourceType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -157,7 +155,6 @@ class ResourceGroupController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-//            return $this->redirect($this->generateUrl('attentra_resourcegroup_edit', array('id' => $id)));
             return $this->redirect($this->generateUrl('attentra_resourcegroup'));
         }
 
@@ -244,4 +241,5 @@ class ResourceGroupController extends Controller
             ->getForm();
     }
 
-} 
+}
+

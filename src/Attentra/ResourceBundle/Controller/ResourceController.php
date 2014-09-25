@@ -157,7 +157,6 @@ class ResourceController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-//            return $this->redirect($this->generateUrl('attentra_resource_edit', array('id' => $id)));
             return $this->redirect($this->generateUrl('attentra_resource'));
         }
 
