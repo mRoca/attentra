@@ -6,7 +6,7 @@ namespace PostDeploy;
  * Class SymfonyPostDeploy
  * @package PostDeploy
  *
- * Permit to run SF commands with PHP after a composer install
+ * Permit to run SF commands with PHP after a composer install. Another possible way : put commands in composer.json "post-install-cmd" part.
  */
 class SymfonyPostDeploy
 {
@@ -49,7 +49,7 @@ class SymfonyPostDeploy
 
     public function assetsInstall($env = 'prod')
     {
-        $this->executeSymfonyCmd("assets:install --no-debug --env=$env $this->webPath");
-        $this->executeSymfonyCmd("assetic:dump --no-debug --env=$env");
+        $this->executeSymfonyCmd("assets:install --quiet --no-debug --env=$env $this->webPath");
+        $this->executeSymfonyCmd("assetic:dump --quiet --no-debug --env=$env");
     }
 }
