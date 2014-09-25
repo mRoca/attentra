@@ -28,10 +28,17 @@ Another project (https://github.com/mRoca/attentra-worker) allows to use a Raspb
 
 ## Usage
 
+### From command line
+
     git clone git@github.com:mRoca/attentra.git
     composer install
     app/console doctrine:database:create
     app/console doctrine:schema:update --force
+
+### From files
+
+* Put the project files in the concerned directory
+* Go to /postdeploy/run.php to install all resources
 
 ## API Documentation
 
