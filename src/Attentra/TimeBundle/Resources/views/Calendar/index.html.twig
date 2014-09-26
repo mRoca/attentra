@@ -73,7 +73,18 @@
                             <div class="input-group">
                                 <input type="text" maxlength="255" required="required" class="form-control" id="event-identifier">
                                 <span class="input-group-btn">
+
                                     <a href="#" class="btn btn-primary" id="event-identifier-link"><span class="glyphicon glyphicon-calendar"></span> {% trans %}Calendar{% endtrans %}</a>
+
+                                     <button type="button" class="btn btn-default dropdown-toggle" id="event-identifier-choose" data-toggle="dropdown">
+                                         <span class="caret"></span>
+                                         <span class="sr-only">{% trans %}Display identifiers{% endtrans %}</span>
+                                     </button>
+                                     <ul class="dropdown-menu" id="event-identifier-choose-options" role="menu">
+                                         {% for curIdentifier in identifiers %}
+                                             <li><a href="#" data-value="{{ curIdentifier.identifier }}">{{ curIdentifier }}</a></li>
+                                         {% endfor %}
+                                     </ul>
                                 </span>
                             </div>
                         </div>
@@ -152,6 +163,7 @@
                 $('#event-start-date').val(_event.start ? _event.start.format('YYYY-MM-DD') : '').trigger('keyup');
                 $('#event-start-time').val(_event.start ? _event.start.format('HH:mm:ss') : '');
                 $('#event-start-link, #event-identifier-link').toggle(_event.start != '');
+                $('#event-identifier-choose').toggle(_event.start === '');
 
                 $('#event-end-id').val(_event.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
                 $('#event-end-date').val(_event.endIsDefined ? _event.end.format('YYYY-MM-DD') : (_event.start ? _event.start.format('YYYY-MM-DD') : '')).trigger('keyup');
@@ -259,6 +271,10 @@
 
             $('#agenda-identifier').on('change', function () {
                 document.location = calendarLink.replace('=0', '=' + $(this).val());
+            });
+
+            $('#event-identifier-choose-options').find('a').on('click', function () {
+                $('#event-identifier').val($(this).attr('data-value'));
             });
         });
     </script>
