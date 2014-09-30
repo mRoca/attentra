@@ -51,7 +51,7 @@ abstract class GenericRestController extends FOSRestController
      */
     public function cgetAction(ParamFetcherInterface $paramFetcher)
     {
-        return $this->handler->all($paramFetcher->get('limit'), $paramFetcher->get('offset') ? : 0);
+        return $this->handler->all($paramFetcher->get('limit'), $paramFetcher->get('offset') ?: 0);
     }
 
     /**
@@ -129,7 +129,13 @@ abstract class GenericRestController extends FOSRestController
                 '_format' => $request->get('_format')
             );
 
-            return $this->routeRedirectView('attentra_api_get_resource', $routeOptions, Codes::HTTP_CREATED);
+            $getRouteName = str_replace('_post_', '_get_', $request->get('_route'));
+
+            if ($this->container->get('router')->getRouteCollection()->get($getRouteName)) {
+                return $this->routeRedirectView($getRouteName, $routeOptions, Codes::HTTP_CREATED);
+            } else {
+                return $this->view(null, Codes::HTTP_CREATED);
+            }
 
         } catch (InvalidFormException $exception) {
 
@@ -175,7 +181,13 @@ abstract class GenericRestController extends FOSRestController
                 '_format' => $request->get('_format')
             );
 
-            return $this->routeRedirectView('attentra_api_get_resource', $routeOptions, $statusCode);
+            $getRouteName = str_replace('_put_', '_get_', $request->get('_route'));
+
+            if ($this->container->get('router')->getRouteCollection()->get($getRouteName)) {
+                return $this->routeRedirectView($getRouteName, $routeOptions, $statusCode);
+            } else {
+                return $this->view(null, $statusCode);
+            }
 
         } catch (InvalidFormException $exception) {
 
@@ -215,7 +227,13 @@ abstract class GenericRestController extends FOSRestController
                 '_format' => $request->get('_format')
             );
 
-            return $this->routeRedirectView('attentra_api_get_resource', $routeOptions, Codes::HTTP_NO_CONTENT);
+            $getRouteName = str_replace('_patch_', '_get_', $request->get('_route'));
+
+            if ($this->container->get('router')->getRouteCollection()->get($getRouteName)) {
+                return $this->routeRedirectView($getRouteName, $routeOptions, Codes::HTTP_NO_CONTENT);
+            } else {
+                return $this->view(null, Codes::HTTP_NO_CONTENT);
+            }
 
         } catch (InvalidFormException $exception) {
 
