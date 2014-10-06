@@ -21,7 +21,8 @@
 {% block body %}
     <h2>
         {% trans %}Time spent{% endtrans %}
-        {% if identifier %}- <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+        {% if identifier %} - {{ identifier }}{% endif %}
+        {#{% if identifier %}- <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}#}
     </h2>
 
     <div class="form-inline">

@@ -30,7 +30,8 @@
 
     <h1>
         {% trans %}Time inputs{% endtrans %}
-        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+        {% if identifier %} - {{ identifier }}{% endif %}
+        {#{% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}#}
     </h1>
 
     <div class="clearfix"></div>
@@ -162,9 +163,10 @@
                 $('#event-start-id').val(id.split('-').length ? id.split('-')[0] : '');
                 $('#event-start-date').val(_event.start ? _event.start.format('YYYY-MM-DD') : '').trigger('keyup');
                 $('#event-start-time').val(_event.start ? _event.start.format('HH:mm:ss') : '');
-                $('#event-start-link, #event-identifier-link').toggle(_event.start != '');
-                $('#event-identifier-choose').toggle(_event.start === '');
-
+                $('#event-start-link').toggle(_event.start != '');
+                $('#event-identifier-link').toggle(_event.identifier != '');
+                $('#event-identifier-choose').toggle(_event.start === '' && _event.identifier === '');
+                
                 $('#event-end-id').val(_event.endIsDefined && id.split('-')[1] ? id.split('-')[1] : '');
                 $('#event-end-date').val(_event.endIsDefined ? _event.end.format('YYYY-MM-DD') : (_event.start ? _event.start.format('YYYY-MM-DD') : '')).trigger('keyup');
                 $('#event-end-time').val(_event.endIsDefined ? _event.end.format('HH:mm:ss') : '');

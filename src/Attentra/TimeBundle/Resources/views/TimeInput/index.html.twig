@@ -15,7 +15,8 @@
 {% block body %}
     <h1>
         {% trans %}Time inputs{% endtrans %}
-        {% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}
+        {% if identifier %} - {{ identifier }}{% endif %}
+        {#{% if identifier %} - <a href="{{ path('attentra_resource_byidentifier', { 'identifier': identifier }) }}">{{ identifier }}</a>{% endif %}#}
     </h1>
 
     {% if pagination is empty %}
