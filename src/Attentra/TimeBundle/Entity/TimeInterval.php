@@ -32,6 +32,10 @@ class TimeInterval extends \DateInterval
      */
     public function toSeconds()
     {
-        return (new \DateTime('@0'))->add($this)->getTimestamp();
+        $now = new \DateTime('now');
+        $new = clone $now;
+        $new->add($this);
+
+        return $new->getTimestamp() - $now->getTimestamp();
     }
 } 
