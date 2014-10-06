@@ -41,6 +41,76 @@ class PlanningController extends Controller
         $start      = \DateTime::createFromFormat('Y-m-d', $this->get('request')->query->get('start'));
         $end        = \DateTime::createFromFormat('Y-m-d', $this->get('request')->query->get('end'));
 
+        list($start, $end) = $this->ajustStartEndDates($start, $end);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var TimeInput[] $timeInputs */
+        $timeInputs = $em->getRepository('AttentraTimeBundle:TimeInput')->qbFindByDates($identifier, $start, $end)->getQuery()->execute();
+
+        $timeSpentManager = new TimeSpentParser($start, $end);
+        $timeSpentManager->addTimePeriods($this->timePeriodParser->timeInputsToEvents($timeInputs));
+
+        $identifiers = $em->getRepository('AttentraResourceBundle:Resource')->findBy(array(), array('name' => 'asc'));
+
+        return array(
+            'identifier'       => $identifier,
+            'identifiers'      => $identifiers,
+            'timeSpentManager' => $timeSpentManager,
+            'start'            => $start,
+            'end'              => $end,
+        );
+    }
+
+    /**
+     * Display time spent by resources by week & month
+     *
+     * @Route("/summary", name="attentra_planning_summary")
+     * @Method("GET")
+     * @Template()
+     */
+    public function summaryAction()
+    {
+        $start = \DateTime::createFromFormat('Y-m-d', $this->get('request')->query->get('start'));
+        $end   = \DateTime::createFromFormat('Y-m-d', $this->get('request')->query->get('end'));
+
+        list($start, $end) = $this->ajustStartEndDates($start, $end);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var TimeInput[] $timeInputs */
+        $timeInputs = $em->getRepository('AttentraTimeBundle:TimeInput')->qbFindByDates(null, $start, $end)->getQuery()->execute();
+
+        $timeInputsByIdentifier = [];
+        foreach ($timeInputs as $timeInput) {
+            $timeInputsByIdentifier[$timeInput->getIdentifier()][] = $timeInput;
+        }
+
+        unset($timeInputs);
+
+        /** @var TimeSpentParser[] $timeSpentManagers */
+        $timeSpentManagers = [];
+        foreach ($timeInputsByIdentifier as $identifier => $timeInputs) {
+            $timeSpentManagers[$identifier] = new TimeSpentParser($start, $end);
+            $timeSpentManagers[$identifier]->addTimePeriods($this->timePeriodParser->timeInputsToEvents($timeInputs));
+        }
+
+        return array(
+            'timeSpentManagers' => $timeSpentManagers,
+            'start'             => $start,
+            'end'               => $end,
+        );
+    }
+
+    /**
+     * @param \Datetime $start
+     * @param \Datetime $end
+     * @return \Datetime[]
+     */
+    protected function ajustStartEndDates($start, $end)
+    {
         $end = $this->timePeriodParser->ajustStartDate($end !== false ? $end : new \DateTime('tomorrow'));
 
         //By default, display one month
@@ -54,23 +124,6 @@ class PlanningController extends Controller
 
         $start = $this->timePeriodParser->ajustStartDate($start);
 
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var TimeInput[] $timeinputs */
-        $timeinputs = $em->getRepository('AttentraTimeBundle:TimeInput')->qbFindByDates($identifier, $start, $end)->getQuery()->execute();
-
-        $timeSpentManager = new TimeSpentParser($start, $end);
-        $timeSpentManager->addTimePeriods($this->timePeriodParser->timeInputsToEvents($timeinputs));
-
-        $identifiers = $em->getRepository('AttentraResourceBundle:Resource')->findBy(array(), array('name' => 'asc'));
-
-        return array(
-            'identifier'       => $identifier,
-            'identifiers'      => $identifiers,
-            'timeSpentManager' => $timeSpentManager,
-            'start'            => $start,
-            'end'              => $end,
-        );
+        return [$start, $end];
     }
 }

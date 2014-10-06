@@ -1,5 +1,11 @@
 
+dashboard_redirect:
+    path: /
+    defaults:
+        _controller:  "FrameworkBundle:Redirect:redirect"
+        route:        "attentra_planning_summary"
+        permanent:    true
+
 attentra_dashboard:
   pattern: /
   defaults: {_controller: AttentraWebBundle:Dashboard:index}
-

@@ -45,6 +45,7 @@
     {% set minutes = ((duration % 3600) / 60) | round(0, 'floor') %}
     {% set secondes = ((duration % 3600) % 60) %}
 
+    <span class="hidden duration-total">{{ duration }}</span>
     {% if(hours) %} <span class="duration-hours">{{ hours }} {{ useShortSyntax ? 'h' : ('hour|hours' | transchoice(hours)) }}</span>{% endif %}
     {% if(minutes) %} <span class="duration-minutes">{{ minutes }} {{ useShortSyntax ? 'm' : ('minute|minutes' | transchoice(minutes)) }}</span>{% endif %}
     {% if(secondes) %} <span class="duration-seconds">{{ secondes }} {{ useShortSyntax ? 's' : ('seconde|secondes' | transchoice(secondes)) }}</span>{% endif %}

@@ -56,64 +56,68 @@
     {% if timeSpentManager.hasFullPeriod('year') %}
         <hr/>
         <h2>{% trans %}By year{% endtrans %}</h2>
-        <table class="table table-striped table-condensed">
-            {% for day in timeSpentManager.datePeriod('year') %}
-                {% if timeSpentManager.isPeriodFull('year', day) %}
-                    <tr>
-                        <td>{{ day.format('Y') }}</td>
-                        <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('year', day).toSeconds) }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-condensed">
+                {% for day in timeSpentManager.datePeriod('year') %}
+                    {% if timeSpentManager.isPeriodFull('year', day) %}
+                        <tr>
+                            <td>{{ day.format('Y') }}</td>
+                            <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('year', day).toSeconds) }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
     {% endif %}
 
     <hr/>
     <h2>{% trans %}By month{% endtrans %}</h2>
-    <table class="table table-striped table-condensed">
-        {% for day in timeSpentManager.datePeriod('month') %}
-            {% if timeSpentManager.isPeriodFull('month', day) or timeSpentManager.isLastPeriod('month', day) %}
-                <tr class="{{ not timeSpentManager.isPeriodFull('month', day) ? 'danger' : '' }}">
-                    <td>{{ day.format('F Y') }}</td>
-                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('month', day).toSeconds) }}</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('month') %}
+                {% if timeSpentManager.isPeriodFull('month', day) or timeSpentManager.isLastPeriod('month', day) %}
+                    <tr class="{{ not timeSpentManager.isPeriodFull('month', day) ? 'danger' : '' }}">
+                        <td>{{ day.format('F Y') }}</td>
+                        <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('month', day).toSeconds) }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
 
     <hr/>
     <h2>{% trans %}By week{% endtrans %}</h2>
-    <table class="table table-striped table-condensed">
-        {% for day in timeSpentManager.datePeriod('week') %}
-            {% if timeSpentManager.isPeriodFull('week', day) or timeSpentManager.isLastPeriod('week', day) %}
-                <tr class="{{ not timeSpentManager.isPeriodFull('week', day) ? 'danger' : '' }}">
-                    <td>
-                        ({{ day.format('W') }})
-                        {{ timeSpentManager.getPeriodStartDate('week', day).format('j F') }} -
-                        {{ timeSpentManager.getPeriodEndDate('week', day).format('j F Y') }}
-                    </td>
-                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('week', day).toSeconds) }}</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('week') %}
+                {% if timeSpentManager.isPeriodFull('week', day) or timeSpentManager.isLastPeriod('week', day) %}
+                    <tr class="{{ not timeSpentManager.isPeriodFull('week', day) ? 'danger' : '' }}">
+                        <td>
+                            ({{ day.format('W') }})
+                            {{ timeSpentManager.getPeriodStartDate('week', day).format('j F') }} -
+                            {{ timeSpentManager.getPeriodEndDate('week', day).format('j F Y') }}
+                        </td>
+                        <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('week', day).toSeconds) }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
 
     <hr/>
     <h2>{% trans %}By day{% endtrans %}</h2>
-    <table class="table table-striped table-condensed">
-        {% for day in timeSpentManager.datePeriod('day') %}
-            {% if timeSpentManager.isPeriodFull('day', day) %}
-                <tr class="{{ day.format('N') > 5 ? 'info' : '' }}">
-                    <td>{{ day.format('l j F') }}</td>
-                    <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('day', day).toSeconds) }}</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
-
-    <style type="text/css">
-
-    </style>
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed">
+            {% for day in timeSpentManager.datePeriod('day') %}
+                {% if timeSpentManager.isPeriodFull('day', day) %}
+                    <tr class="{{ day.format('N') > 5 ? 'info' : '' }}">
+                        <td>{{ day.format('l j F') }}</td>
+                        <td>{{ bootstrap.duration(timeSpentManager.getSpentTimeIntervalByPeriod('day', day).toSeconds) }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
 
     <script type="text/javascript">
         $(function () {
