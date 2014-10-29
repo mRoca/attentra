@@ -145,7 +145,7 @@ class TimeSpentParser
         $date->setTime(0, 0, 0);
 
         if ($ajustPeriod === 'year') {
-            return $date->modify('first day of January' . $date->format('Y'));
+            return $date->modify('first day of January ' . $date->format('Y'));
         } else if ($ajustPeriod === 'month') {
             return $date->modify('first day of this month');
         } else if ($ajustPeriod === 'week') {
