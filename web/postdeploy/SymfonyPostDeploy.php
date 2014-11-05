@@ -13,12 +13,14 @@ class SymfonyPostDeploy
     protected $composerPostDeploy;
     protected $symfonyConsole = 'app/console';
     protected $webPath = 'web';
+    protected $phpCommand = 'php';
 
     public function __construct(ComposerPostDeploy $composerPostDeploy)
     {
         $this->composerPostDeploy = $composerPostDeploy;
         $this->symfonyConsole     = $composerPostDeploy->getBasePath() . $this->symfonyConsole;
         $this->webPath            = $composerPostDeploy->getBasePath() . $this->webPath;
+        $this->phpCommand         = $composerPostDeploy->getPhpCommand();
 
         if (!file_exists($this->symfonyConsole)) {
             throw new \ErrorException('Symfony console file not found');
@@ -27,8 +29,8 @@ class SymfonyPostDeploy
 
     public function executeSymfonyCmd($command)
     {
-        $this->composerPostDeploy->log("[COMMAND] php $this->symfonyConsole $command");
-        $res = ComposerPostDeploy::executeCmd("php $this->symfonyConsole $command");
+        $this->composerPostDeploy->log("[COMMAND] $this->phpCommand $this->symfonyConsole $command");
+        $res = ComposerPostDeploy::executeCmd("$this->phpCommand $this->symfonyConsole $command");
         return $this->composerPostDeploy->log($res);
     }
 

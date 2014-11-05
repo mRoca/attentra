@@ -15,6 +15,7 @@ class ComposerPostDeploy
     protected $basePath = "../"; //Relative project root path
     protected $tmpDir = "tmp/"; //Composer HOME for current project
 
+    protected $phpCommand = "php";
     protected $composerPHARFile = "composer.phar";
     protected $composerInstallFile = "composerinstall.php";
     protected $composerJsonFile = "composer.json";
@@ -47,7 +48,7 @@ class ComposerPostDeploy
      */
     public function composerExecute($cmd)
     {
-        $composerCmd = $this->useSystemComposer ? "composer" : "php $this->composerPHARFileFullPath";
+        $composerCmd = $this->useSystemComposer ? "composer" : "$this->phpCommand $this->composerPHARFileFullPath";
 
         $this->log("[COMMAND] $composerCmd $cmd");
 
@@ -87,7 +88,7 @@ class ComposerPostDeploy
                 throw new ErrorException("Error when creating file [$this->composerInstallFileFullPath]");
             }
 
-            $res = self::executeCmd("php $this->composerInstallFileFullPath --install-dir=$this->tmpDirFileFullPath");
+            $res = self::executeCmd("$this->phpCommand $this->composerInstallFileFullPath --install-dir=$this->tmpDirFileFullPath");
             $this->log($res);
 
             unlink($this->composerInstallFileFullPath);
@@ -154,6 +155,24 @@ class ComposerPostDeploy
     {
         return $returnString ? implode("\n", $this->logs) : $this->logs;
     }
+
+    /**
+     * @return string
+     */
+    public function getPhpCommand()
+    {
+        return $this->phpCommand;
+    }
+
+    /**
+     * @param string $phpCommand
+     */
+    public function setPhpCommand($phpCommand)
+    {
+        $this->phpCommand = $phpCommand;
+    }
+
+
 
     // =============================================================
 
