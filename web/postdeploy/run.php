@@ -15,8 +15,8 @@ try {
      *  OVH shared hosting
      * ################## */
 
-    if (file_exists('/usr/local/bin/php.TEST.5')) {
-        $phpExecCommand = '/usr/local/bin/php.TEST.5 -d register_argc_argv=1 -d magic_quotes_gpc=0 -d register_globals=0';
+    if (file_exists('/usr/local/bin/php.ORIG.5_4')) {
+        $phpExecCommand = 'php.ORIG.5_4';
     }
 
     /* ##################
